@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP — Purchase Requisitions in Infor SyteLine</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181b24;
+    --surface-2: #1e2230;
+    --surface-3: #252a38;
+    --border: #2a2f40;
+    --border-active: #4a6cf7;
+    --text: #e4e7ef;
+    --text-dim: #8891a8;
+    --text-muted: #5a6380;
+    --accent: #4a6cf7;
+    --accent-glow: rgba(74,108,247,0.15);
+    --accent-2: #38c98d;
+    --accent-2-glow: rgba(56,201,141,0.15);
+    --ess: #f59e42;
+    --ess-glow: rgba(245,158,66,0.12);
+    --full: #4a6cf7;
+    --full-glow: rgba(74,108,247,0.12);
+    --warn: #f87171;
+    --warn-glow: rgba(248,113,113,0.1);
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 2px;
+  }
+  .header .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid rgba(74,108,247,0.2);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text), var(--text-dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header p {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* LICENSE TOGGLE */
+  .license-toggle-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+  .license-toggle {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px;
+    gap: 4px;
+  }
+  .license-btn {
+    padding: 10px 28px;
+    border: none;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: var(--text-dim);
+    position: relative;
+  }
+  .license-btn.active-ess {
+    background: linear-gradient(135deg, var(--ess), #e08830);
+    color: #fff;
+    box-shadow: 0 4px 20px var(--ess-glow);
+  }
+  .license-btn.active-full {
+    background: linear-gradient(135deg, var(--full), #3a5ad6);
+    color: #fff;
+    box-shadow: 0 4px 20px var(--full-glow);
+  }
+  .license-btn:hover:not(.active-ess):not(.active-full) {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+  .license-btn .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .license-btn .dot.ess-dot { background: var(--ess); }
+  .license-btn .dot.full-dot { background: var(--full); }
+  .license-btn.active-ess .dot, .license-btn.active-full .dot { background: #fff; }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    margin-bottom: 36px;
+    padding: 0 4px;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .progress-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--surface-2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 100px;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* STEP CARD */
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .step-card:hover {
+    border-color: var(--border-active);
+    box-shadow: 0 0 0 1px var(--border-active), 0 8px 32px rgba(0,0,0,0.2);
+  }
+  .step-card.completed {
+    border-color: var(--accent-2);
+    box-shadow: 0 0 0 1px var(--accent-2), 0 4px 20px var(--accent-2-glow);
+  }
+  .step-card.completed .step-header { opacity: 0.7; }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    cursor: pointer;
+    gap: 14px;
+    user-select: none;
+  }
+
+  .step-number {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: var(--surface-3);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+  .step-card.completed .step-number {
+    background: var(--accent-2);
+    color: #fff;
+    border-color: var(--accent-2);
+  }
+
+  .step-title-wrap { flex: 1; }
+  .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .step-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .step-tags {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .tag-ess { background: var(--ess-glow); color: var(--ess); border: 1px solid rgba(245,158,66,0.2); }
+  .tag-full { background: var(--full-glow); color: var(--full); border: 1px solid rgba(74,108,247,0.2); }
+  .tag-both { background: var(--accent-2-glow); color: var(--accent-2); border: 1px solid rgba(56,201,141,0.2); }
+
+  .step-chevron {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+  }
+  .step-card.open .step-chevron { transform: rotate(180deg); }
+
+  /* STEP BODY */
+  .step-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .step-card.open .step-body { max-height: 2000px; }
+
+  .step-content {
+    padding: 0 20px 20px 70px;
+  }
+
+  .step-content p {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  .substep {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    border-left: 3px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .substep:hover { border-left-color: var(--accent); }
+  .substep-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 20px;
+    padding-top: 2px;
+  }
+  .substep-text {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .substep-text strong { color: var(--accent-2); font-weight: 600; }
+
+  .nav-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--surface-3);
+    color: var(--ess);
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    display: inline-block;
+    border: 1px solid var(--border);
+    word-break: break-all;
+  }
+  .nav-path.full-path { color: var(--full); }
+
+  .tip-box {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .tip-box.info {
+    background: var(--accent-glow);
+    border: 1px solid rgba(74,108,247,0.15);
+    color: #a0b4ff;
+  }
+  .tip-box.warning {
+    background: var(--warn-glow);
+    border: 1px solid rgba(248,113,113,0.15);
+    color: #fca5a5;
+  }
+  .tip-box.success {
+    background: var(--accent-2-glow);
+    border: 1px solid rgba(56,201,141,0.15);
+    color: #6ee7b7;
+  }
+  .tip-icon { font-size: 16px; flex-shrink: 0; padding-top: 1px; }
+
+  .diff-callout {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .diff-ess {
+    background: var(--ess-glow);
+    border: 1px solid rgba(245,158,66,0.15);
+    color: #fbbf6a;
+  }
+  .diff-full {
+    background: var(--full-glow);
+    border: 1px solid rgba(74,108,247,0.15);
+    color: #a0b4ff;
+  }
+  .diff-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .field-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  .field-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--surface-3);
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .field-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .field-table td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-2);
+    font-weight: 500;
+  }
+  .field-table tr:last-child td { border-bottom: none; }
+
+  /* COMPLETE BUTTON */
+  .complete-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 9px 18px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface-2);
+    color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .complete-btn:hover {
+    border-color: var(--accent-2);
+    color: var(--accent-2);
+    background: var(--accent-2-glow);
+  }
+  .complete-btn.done {
+    border-color: var(--accent-2);
+    color: var(--accent-2);
+    background: var(--accent-2-glow);
+  }
+  .check-icon {
+    width: 16px; height: 16px;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .complete-btn.done .check-icon {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+  }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 32px 0 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ESS LIMITATIONS PANEL */
+  .ess-limits-panel {
+    background: var(--surface);
+    border: 1px solid rgba(245,158,66,0.25);
+    border-radius: var(--radius-lg);
+    margin-bottom: 32px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .ess-limits-panel:hover {
+    border-color: var(--ess);
+    box-shadow: 0 4px 24px var(--ess-glow);
+  }
+  .ess-limits-header {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    cursor: pointer;
+    gap: 14px;
+    user-select: none;
+  }
+  .ess-limits-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--ess-glow);
+    color: var(--ess);
+    border: 1px solid rgba(245,158,66,0.2);
+  }
+  .ess-limits-title-wrap { flex: 1; }
+  .ess-limits-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ess);
+  }
+  .ess-limits-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .ess-limits-chevron {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+  }
+  .ess-limits-panel.expanded .ess-limits-chevron {
+    transform: rotate(180deg);
+  }
+  .ess-limits-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ess-limits-panel.expanded .ess-limits-body {
+    max-height: 2000px;
+  }
+  .ess-limits-content {
+    padding: 0 20px 24px;
+  }
+  .ess-limits-intro {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+  .limits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 640px) {
+    .limits-grid { grid-template-columns: 1fr; }
+  }
+  .limit-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+  .limit-card:hover {
+    border-color: rgba(245,158,66,0.3);
+  }
+  .limit-card-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .limit-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ess);
+    margin-bottom: 6px;
+  }
+  .limit-card-desc {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .ess-limits-footer {
+    margin-top: 16px;
+  }
+
+  .reset-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 10px;
+  }
+  .reset-btn:hover {
+    color: var(--warn);
+    border-color: var(--warn);
+    background: var(--warn-glow);
+  }
+
+  /* Hidden by filter */
+  .step-card.hidden-by-filter {
+    display: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .step-content { padding-left: 20px; }
+    .license-btn { padding: 8px 18px; font-size: 13px; }
+    .step-tags { display: none; }
+  }
+
+  /* Print styles */
+  @media print {
+    body { background: #fff; color: #000; }
+    .step-body { max-height: none !important; }
+    .license-toggle-wrap, .complete-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="app">
+  <div class="header">
+    <div class="badge">Standard Operating Procedure</div>
+    <h1>Purchase Requisitions in Infor SyteLine</h1>
+    <p>A step-by-step interactive guide for creating purchase requisitions — covering both Employee Self Service (ESS) and Full License workflows.</p>
+  </div>
+
+  <!-- License Toggle -->
+  <div class="license-toggle-wrap">
+    <div class="license-toggle">
+      <button class="license-btn active-ess" id="btn-ess" onclick="setFilter('ess')">
+        <span class="dot ess-dot"></span>ESS License
+      </button>
+      <button class="license-btn" id="btn-full" onclick="setFilter('full')">
+        <span class="dot full-dot"></span>Full License
+      </button>
+      <button class="license-btn" id="btn-all" onclick="setFilter('all')">
+        All Steps
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar-wrap">
+    <div class="progress-header">
+      <span class="progress-label">Completion</span>
+      <span class="progress-pct" id="progress-pct">0%</span>
+      <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ====== ESS LIMITATIONS PANEL ====== -->
+  <div class="ess-limits-panel" id="ess-limits-panel">
+    <div class="ess-limits-header" onclick="document.getElementById('ess-limits-panel').classList.toggle('expanded')">
+      <div class="ess-limits-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      </div>
+      <div class="ess-limits-title-wrap">
+        <div class="ess-limits-title">ESS License Limitations</div>
+        <div class="ess-limits-subtitle">What ESS users cannot do vs. Full License holders</div>
+      </div>
+      <svg class="ess-limits-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="ess-limits-body">
+      <div class="ess-limits-content">
+
+        <div class="ess-limits-intro">
+          The Employee Self Service (ESS) license is designed for basic self-service tasks. When it comes to purchase requisitions, ESS users will encounter several restrictions compared to Full License holders.
+        </div>
+
+        <div class="limits-grid">
+          <div class="limit-card">
+            <div class="limit-card-icon">🔒</div>
+            <div class="limit-card-title">Simplified Form Access</div>
+            <div class="limit-card-desc">ESS users only see the ESS portal view of the Purchase Requisition form. You will not have access to the full SyteLine rich client menus, navigation tree, or Quick Search (Ctrl+Q).</div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">📉</div>
+            <div class="limit-card-title">Fewer Fields Available</div>
+            <div class="limit-card-desc">Many advanced fields are hidden or read-only in ESS — including GL Account overrides, account distribution splits, project codes, buyer assignment, warehouse selection, and tax codes. These are typically set by your approver or purchasing agent.</div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">👤</div>
+            <div class="limit-card-title">Own Requisitions Only</div>
+            <div class="limit-card-desc">ESS users can only view and manage requisitions they have personally created. You cannot search, view, or edit requisitions submitted by other employees.</div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">🚫</div>
+            <div class="limit-card-title">No PO Conversion</div>
+            <div class="limit-card-desc">ESS users cannot convert approved requisitions into Purchase Orders. That step is handled by the Purchasing department using a Full License.</div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">📊</div>
+            <div class="limit-card-title">No Reporting or Analytics</div>
+            <div class="limit-card-desc">Purchasing reports, requisition-to-PO cross references, spend analysis, and other reporting forms are not available in the ESS portal.</div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">⚙️</div>
+            <div class="limit-card-title">No Master Data Access</div>
+            <div class="limit-card-desc">ESS users cannot view or modify master data such as the Vendor Master, Item Master, or Chart of Accounts. You can look up existing items/vendors within the requisition form, but cannot create or edit them.</div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">✅</div>
+            <div class="limit-card-title">No Approval Authority</div>
+            <div class="limit-card-desc">ESS users can submit requisitions for approval but cannot approve or reject requisitions from others. Approval authority requires a Full License with the appropriate workflow role.</div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">📝</div>
+            <div class="limit-card-title">Limited Edit After Submission</div>
+            <div class="limit-card-desc">Once a requisition is submitted, ESS users generally cannot recall or edit it. If changes are needed, contact your approver to reject it back to you, or reach out to the Purchasing team.</div>
+          </div>
+        </div>
+
+        <div class="ess-limits-footer">
+          <div class="tip-box info" style="margin-top:0;">
+            <span class="tip-icon">💡</span>
+            <span>If you need capabilities beyond the ESS license, speak with your System Administrator about a license upgrade. Your organization's Infor license agreement determines how many Full License seats are available.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: BEFORE YOU BEGIN ====== -->
+  <div class="section-divider">Before You Begin</div>
+
+  <!-- Step 1 -->
+  <div class="step-card" data-scope="both" data-step="1">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">01</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Gather Required Information</div>
+        <div class="step-subtitle">Collect details before you begin</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>Have the following information ready before navigating to the requisition form. This ensures efficient data entry and reduces errors.</p>
+
+        <table class="field-table">
+          <thead><tr><th>Information</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Item / Description</td><td>What you need to purchase — item number (if known) or a clear text description</td></tr>
+            <tr><td>Quantity</td><td>Number of units required</td></tr>
+            <tr><td>Unit of Measure</td><td>EA (each), BX (box), CS (case), etc.</td></tr>
+            <tr><td>Estimated Unit Cost</td><td>Approximate price per unit — check past POs or vendor quotes</td></tr>
+            <tr><td>Vendor (if known)</td><td>Preferred supplier name or vendor number</td></tr>
+            <tr><td>Needed-By Date</td><td>The date you require the goods or services</td></tr>
+            <tr><td>GL Account / Cost Center</td><td>The account to charge — department or project code</td></tr>
+            <tr><td>Justification / Notes</td><td>Business reason for the purchase (may be required for approvals)</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tip-box info">
+          <span class="tip-icon">📋</span>
+          <span>For recurring purchases, check if a <strong>Blanket PO</strong> or standing order already exists. Your purchasing team can advise.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: NAVIGATION ====== -->
+  <div class="section-divider">Navigate to the Requisition Form</div>
+
+  <!-- Step 2 (ESS) -->
+  <div class="step-card" data-scope="ess" data-step="2">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">02</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Open the ESS Purchase Requisition Form</div>
+        <div class="step-subtitle">Navigate through the Employee Self Service portal</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-ess">ESS</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="nav-path">Home &gt; Employee Self Service &gt; Purchase Requisitions</div>
+
+        <div class="substep">
+          <span class="substep-num">2a</span>
+          <span class="substep-text">From the SyteLine homepage, click on the <strong>Employee Self Service</strong> tile or menu item. This is your main ESS dashboard.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">2b</span>
+          <span class="substep-text">Locate and click <strong>Purchase Requisitions</strong> in the ESS menu. Depending on your configuration, this may be under a "Purchasing" or "Requests" sub-menu.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">2c</span>
+          <span class="substep-text">The <strong>Purchase Requisition List</strong> will open, showing any existing requisitions you've previously created. Click <strong>New</strong> to create a new requisition.</span>
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">💡</span>
+          <span>ESS navigation is simplified compared to full-client. If you don't see "Purchase Requisitions," your administrator may need to enable it in your ESS configuration or role.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 (Full) -->
+  <div class="step-card" data-scope="full" data-step="2">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">02</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Open the Purchase Requisition Form</div>
+        <div class="step-subtitle">Navigate through the SyteLine client menus</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-full">Full</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="nav-path full-path">Menu &gt; Purchasing &gt; Purchase Requisitions &gt; Purchase Requisitions</div>
+
+        <div class="substep">
+          <span class="substep-num">2a</span>
+          <span class="substep-text">From the SyteLine main menu or navigation pane, expand the <strong>Purchasing</strong> module.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">2b</span>
+          <span class="substep-text">Under Purchasing, expand <strong>Purchase Requisitions</strong> and click <strong>Purchase Requisitions</strong> to open the form.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">2c</span>
+          <span class="substep-text">Alternatively, use the <strong>Quick Search</strong> bar (Ctrl+Q) and type <strong>"Purchase Requisitions"</strong> to jump directly to the form.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">2d</span>
+          <span class="substep-text">The form will open in <strong>Browse</strong> mode showing existing records. Click the <strong>New</strong> button (or press Ctrl+N) on the toolbar to create a new requisition.</span>
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">⌨️</span>
+          <span>Full license users can also add the Purchase Requisitions form to their <strong>Favorites</strong> for quicker access in the future.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: HEADER ====== -->
+  <div class="section-divider">Complete the Requisition Header</div>
+
+  <!-- Step 3 -->
+  <div class="step-card" data-scope="both" data-step="3">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">03</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Fill In the Requisition Header</div>
+        <div class="step-subtitle">Set top-level details: requester, date, status</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>The header captures who is requesting, when it's needed, and general categorization. Some fields auto-populate based on your login.</p>
+
+        <div class="substep">
+          <span class="substep-num">3a</span>
+          <span class="substep-text"><strong>Requisition Number</strong> — typically auto-generated by the system. Do not modify unless your organization uses manual numbering.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">3b</span>
+          <span class="substep-text"><strong>Requester</strong> — will default to your user/employee ID. Verify this is correct.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">3c</span>
+          <span class="substep-text"><strong>Requisition Date</strong> — defaults to today's date. Adjust only if backdating is permitted by policy.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">3d</span>
+          <span class="substep-text"><strong>Needed-By Date</strong> — enter the date you need the goods/services. This drives purchasing urgency and planning.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">3e</span>
+          <span class="substep-text"><strong>Status</strong> — will show as <strong>"Open"</strong> or <strong>"New"</strong> for a new record. Do not change this manually.</span>
+        </div>
+
+        <div class="diff-callout diff-full" style="margin-top:12px;">
+          <span class="diff-label">Full License — Additional Fields</span>
+          Full license users may also see: <strong>Warehouse</strong> (default receiving warehouse), <strong>Ship To</strong> address, <strong>Buyer Code</strong>, and <strong>Priority</strong>. Fill these if applicable to your organization's workflow.
+        </div>
+
+        <div class="tip-box warning">
+          <span class="tip-icon">⚠️</span>
+          <span>Do not change the <strong>Status</strong> field manually. Status is managed by the system through the approval workflow.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: LINE ITEMS ====== -->
+  <div class="section-divider">Add Line Items</div>
+
+  <!-- Step 4 -->
+  <div class="step-card" data-scope="both" data-step="4">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">04</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Add Requisition Line Items</div>
+        <div class="step-subtitle">Enter item details, quantities, and costs</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>Each line item represents a distinct product or service you're requesting. You can add multiple lines to a single requisition.</p>
+
+        <div class="substep">
+          <span class="substep-num">4a</span>
+          <span class="substep-text">Click <strong>Add Line</strong> or navigate to the <strong>Lines</strong> tab/grid at the bottom of the form.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4b</span>
+          <span class="substep-text"><strong>Item Number</strong> — If ordering a stocked/cataloged item, enter or look up the item number. The description, U/M, and cost may auto-populate from the item master. For non-stock items, leave blank and enter a manual description.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4c</span>
+          <span class="substep-text"><strong>Description</strong> — Provide a clear, specific description of what you're ordering. Be detailed enough for the buyer to source correctly (e.g., "Safety goggles, ANSI Z87.1 rated, clear lens" rather than "goggles").</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4d</span>
+          <span class="substep-text"><strong>Quantity</strong> — Enter the number of units needed.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4e</span>
+          <span class="substep-text"><strong>Unit of Measure (U/M)</strong> — Select from the dropdown (EA, BX, CS, etc.). Ensure this matches how the vendor prices the item.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4f</span>
+          <span class="substep-text"><strong>Unit Cost / Estimated Price</strong> — Enter the estimated cost per unit. If unknown, provide your best estimate — this helps the approval process.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4g</span>
+          <span class="substep-text"><strong>Vendor</strong> — If you have a preferred vendor, enter or look up their vendor number. This is optional on the requisition but helps purchasing.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4h</span>
+          <span class="substep-text">To add more lines, click <strong>Add Line</strong> again and repeat the above for each item/service.</span>
+        </div>
+
+        <div class="diff-callout diff-full" style="margin-top:12px;">
+          <span class="diff-label">Full License — Additional Line Fields</span>
+          Full license users may also see and complete: <strong>GL Account</strong> (the expense account to charge), <strong>Project Code</strong>, <strong>Cost Center / Department</strong>, <strong>Delivery Address</strong>, and <strong>Tax Code</strong>. Fill these according to your organization's chart of accounts and purchasing policy.
+        </div>
+
+        <div class="diff-callout diff-ess" style="margin-top:8px;">
+          <span class="diff-label">ESS License — Simplified View</span>
+          ESS users typically see fewer fields per line. The GL Account and other advanced fields may be auto-assigned based on your department or the approver may set them during review. Focus on providing accurate item, quantity, and cost information.
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">💡</span>
+          <span>Use the <strong>Item Lookup</strong> (magnifying glass icon) to search existing items in the system. This ensures correct item numbers and avoids duplicates.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: GL / ACCOUNT ====== -->
+  <div class="section-divider">Account Assignment</div>
+
+  <!-- Step 5 (Full only) -->
+  <div class="step-card" data-scope="full" data-step="5">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">05</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Assign GL Accounts & Cost Centers</div>
+        <div class="step-subtitle">Map each line to the correct financial account</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-full">Full</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>Full license users are responsible for assigning the correct General Ledger (GL) accounts to each requisition line. This controls which department or project budget is charged.</p>
+
+        <div class="substep">
+          <span class="substep-num">5a</span>
+          <span class="substep-text">On each line item, locate the <strong>Account</strong> or <strong>GL Account</strong> field. Click the lookup to browse the Chart of Accounts.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">5b</span>
+          <span class="substep-text">Select the appropriate <strong>expense account</strong> for the purchase (e.g., 5000-100 for Office Supplies, 5200-200 for Maintenance Parts).</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">5c</span>
+          <span class="substep-text">If your organization uses <strong>account dimensions</strong> (department, project, cost center), fill in each segment as required.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">5d</span>
+          <span class="substep-text">If splitting the cost across multiple accounts, use the <strong>Account Distribution</strong> feature (if available in your configuration) to allocate percentages.</span>
+        </div>
+
+        <div class="tip-box warning">
+          <span class="tip-icon">⚠️</span>
+          <span>Incorrect GL coding is one of the top reasons requisitions are rejected during approval. Double-check with your finance team if unsure which account to use.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 (ESS) -->
+  <div class="step-card" data-scope="ess" data-step="5">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">05</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Verify Auto-Assigned Accounts (ESS)</div>
+        <div class="step-subtitle">Confirm default account coding</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-ess">ESS</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>For ESS users, the GL account and cost center are typically auto-assigned based on your department or employee profile setup in the system.</p>
+
+        <div class="substep">
+          <span class="substep-num">5a</span>
+          <span class="substep-text">Review the <strong>Account</strong> field if it is visible. It should display your department's default expense account.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">5b</span>
+          <span class="substep-text">If the account looks incorrect or you're purchasing for a different department/project, note this in the <strong>Notes/Comments</strong> field so the approver can reassign it.</span>
+        </div>
+
+        <div class="tip-box success">
+          <span class="tip-icon">✅</span>
+          <span>In most ESS configurations, your approver or purchasing agent will finalize GL coding during the approval step. Focus on providing accurate descriptions and costs.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: NOTES & ATTACHMENTS ====== -->
+  <div class="section-divider">Notes &amp; Attachments</div>
+
+  <!-- Step 6 -->
+  <div class="step-card" data-scope="both" data-step="6">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">06</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Add Notes, Comments &amp; Attachments</div>
+        <div class="step-subtitle">Provide supporting justification and documents</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>Supporting documentation speeds up the approval process and gives the buyer context for sourcing decisions.</p>
+
+        <div class="substep">
+          <span class="substep-num">6a</span>
+          <span class="substep-text"><strong>Notes / Comments</strong> — Enter the business justification for the purchase. Example: "Replacement parts for CNC Machine #4 — current bearings are worn and causing quality defects per NCR-2026-0412."</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">6b</span>
+          <span class="substep-text"><strong>Attachments</strong> — Click the attachment/paperclip icon to upload supporting files such as vendor quotes, spec sheets, or photos.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">6c</span>
+          <span class="substep-text">Ensure files are in common formats (PDF, XLSX, DOCX, JPG/PNG) and are under your system's file size limit.</span>
+        </div>
+
+        <div class="diff-callout diff-full" style="margin-top:12px;">
+          <span class="diff-label">Full License</span>
+          Full license users can also use the <strong>Internal Notes</strong> vs. <strong>External Notes</strong> distinction — internal notes stay within your organization, while external notes may carry forward to the Purchase Order sent to the vendor.
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">📎</span>
+          <span>Always attach vendor quotes for purchases above your organization's threshold (e.g., $500+). This significantly speeds up approval.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: REVIEW & SUBMIT ====== -->
+  <div class="section-divider">Review &amp; Submit</div>
+
+  <!-- Step 7 -->
+  <div class="step-card" data-scope="both" data-step="7">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">07</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Review the Requisition</div>
+        <div class="step-subtitle">Verify all details before submitting</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>Before submitting, perform a final review of every field and line item. Errors at this stage cause delays in the approval and purchasing process.</p>
+
+        <div class="substep">
+          <span class="substep-num">7a</span>
+          <span class="substep-text"><strong>Header Check</strong> — Confirm requester name, needed-by date, and any header-level fields are correct.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">7b</span>
+          <span class="substep-text"><strong>Line Items Check</strong> — Review each line for: correct item/description, accurate quantity, correct U/M, reasonable unit cost, and (if applicable) correct GL account.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">7c</span>
+          <span class="substep-text"><strong>Total Amount</strong> — Review the requisition total. Ensure it aligns with your budget expectations and approval thresholds.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">7d</span>
+          <span class="substep-text"><strong>Attachments</strong> — Confirm all supporting documents have been uploaded and are legible.</span>
+        </div>
+
+        <div class="tip-box warning">
+          <span class="tip-icon">⚠️</span>
+          <span>Common rejection reasons: missing description detail, wrong GL account, no vendor quote attached for high-value items, unrealistic needed-by dates.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 8 -->
+  <div class="step-card" data-scope="both" data-step="8">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">08</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Save &amp; Submit for Approval</div>
+        <div class="step-subtitle">Finalize the requisition and route it to your approver</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <div class="substep">
+          <span class="substep-num">8a</span>
+          <span class="substep-text">Click <strong>Save</strong> (Ctrl+S) to save the requisition. This creates the record without submitting it — you can still make edits.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">8b</span>
+          <span class="substep-text">Once satisfied, click <strong>Submit</strong> (or change the status to <strong>"Submitted"</strong> depending on your configuration). This routes the requisition into the approval workflow.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">8c</span>
+          <span class="substep-text">Note the <strong>Requisition Number</strong> for your records. You'll use this to track the status of your request.</span>
+        </div>
+
+        <div class="diff-callout diff-ess">
+          <span class="diff-label">ESS License</span>
+          In the ESS portal, the Submit button is typically a prominent action at the top of the form. After submission, the requisition is routed to your manager or designated approver based on the workflow rules configured in the system.
+        </div>
+        <div class="diff-callout diff-full" style="margin-top:8px;">
+          <span class="diff-label">Full License</span>
+          Full license users may have a <strong>Workflow</strong> toolbar button that shows the approval chain. You can also see which approver the requisition will be routed to before submitting. Some configurations allow selecting from multiple approval paths.
+        </div>
+
+        <div class="tip-box success">
+          <span class="tip-icon">🚀</span>
+          <span>After submission, your approver will receive a notification (email or SyteLine alert). You'll be notified when it's approved or if changes are requested.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: POST-SUBMISSION ====== -->
+  <div class="section-divider">Post-Submission</div>
+
+  <!-- Step 9 -->
+  <div class="step-card" data-scope="both" data-step="9">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">09</div>
+      <div class="step-title-wrap">
+        <div class="step-title">Track Requisition Status</div>
+        <div class="step-subtitle">Monitor approval progress and respond to requests</div>
+      </div>
+      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p>After submission, monitor your requisition through the approval and purchasing lifecycle.</p>
+
+        <table class="field-table">
+          <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Open / Draft</td><td>Saved but not yet submitted — still editable</td></tr>
+            <tr><td>Submitted</td><td>Sent to the approval workflow — awaiting approver action</td></tr>
+            <tr><td>Approved</td><td>Approved by all required approvers — ready for purchasing to convert to a PO</td></tr>
+            <tr><td>Rejected</td><td>Returned by an approver — review comments and resubmit with corrections</td></tr>
+            <tr><td>Converted / Closed</td><td>A Purchase Order has been generated from this requisition</td></tr>
+          </tbody>
+        </table>
+
+        <div class="substep">
+          <span class="substep-num">9a</span>
+          <span class="substep-text">Return to the Purchase Requisition list to check the <strong>Status</strong> column for your requisition number.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">9b</span>
+          <span class="substep-text">If <strong>Rejected</strong>: open the requisition, review the approver's comments, make the requested changes, and re-submit.</span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">9c</span>
+          <span class="substep-text">If <strong>Approved</strong>: purchasing will create a PO. You can track the PO number once generated — it will typically appear linked on the requisition record.</span>
+        </div>
+
+        <div class="diff-callout diff-full" style="margin-top:12px;">
+          <span class="diff-label">Full License — Advanced Tracking</span>
+          Full license users can also use the <strong>Requisition-to-PO Cross Reference</strong> form, and run <strong>Purchasing reports</strong> to track all requisitions by status, requester, date range, and more.
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">🔔</span>
+          <span>Set up Infor notifications (email or Ming.le alerts) for requisition status changes so you're automatically informed when your requisition is approved, rejected, or converted to a PO.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'syteline-pr-sop-progress';
+  let currentFilter = 'ess';
+  let completedSteps = new Set();
+
+  // ── localStorage helpers ──
+  function saveProgress() {
+    try {
+      const data = {
+        filter: currentFilter,
+        completed: Array.from(completedSteps)
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) { /* storage unavailable — fail silently */ }
+  }
+
+  function loadProgress() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (data.filter) currentFilter = data.filter;
+      if (Array.isArray(data.completed)) completedSteps = new Set(data.completed);
+    } catch (e) { /* corrupted or unavailable — start fresh */ }
+  }
+
+  function resetProgress() {
+    if (!confirm('Reset all progress? This cannot be undone.')) return;
+    completedSteps.clear();
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    document.querySelectorAll('.step-card.completed').forEach(card => {
+      card.classList.remove('completed');
+      const btn = card.querySelector('.complete-btn');
+      if (btn) {
+        btn.classList.remove('done');
+        btn.querySelector('svg').style.display = 'none';
+        btn.childNodes[btn.childNodes.length - 1].textContent = ' Mark as Complete';
+      }
+    });
+    updateProgress();
+  }
+
+  // ── Core functions ──
+  function setFilter(type) {
+    currentFilter = type;
+    document.getElementById('btn-ess').className = 'license-btn' + (type === 'ess' ? ' active-ess' : '');
+    document.getElementById('btn-full').className = 'license-btn' + (type === 'full' ? ' active-full' : '');
+    document.getElementById('btn-all').className = 'license-btn' + (type === 'all' ? ' active-full' : '');
+
+    document.querySelectorAll('.step-card').forEach(card => {
+      const scope = card.dataset.scope;
+      if (type === 'all') {
+        card.classList.remove('hidden-by-filter');
+      } else if (scope === 'both' || scope === type) {
+        card.classList.remove('hidden-by-filter');
+      } else {
+        card.classList.add('hidden-by-filter');
+      }
+    });
+
+    // Show/hide ESS limitations panel
+    const essPanel = document.getElementById('ess-limits-panel');
+    if (type === 'full') {
+      essPanel.style.display = 'none';
+    } else {
+      essPanel.style.display = '';
+    }
+
+    updateProgress();
+    saveProgress();
+  }
+
+  function toggleStep(header) {
+    const card = header.closest('.step-card');
+    const wasOpen = card.classList.contains('open');
+    document.querySelectorAll('.step-card.open').forEach(c => c.classList.remove('open'));
+    if (!wasOpen) card.classList.add('open');
+  }
+
+  function toggleComplete(btn) {
+    const card = btn.closest('.step-card');
+    const key = card.dataset.scope + '-' + card.dataset.step;
+    const svg = btn.querySelector('svg');
+
+    if (completedSteps.has(key)) {
+      completedSteps.delete(key);
+      card.classList.remove('completed');
+      btn.classList.remove('done');
+      btn.childNodes[btn.childNodes.length - 1].textContent = ' Mark as Complete';
+      svg.style.display = 'none';
+    } else {
+      completedSteps.add(key);
+      card.classList.add('completed');
+      btn.classList.add('done');
+      btn.childNodes[btn.childNodes.length - 1].textContent = ' Completed';
+      svg.style.display = 'block';
+    }
+    updateProgress();
+    saveProgress();
+  }
+
+  function updateProgress() {
+    const visible = document.querySelectorAll('.step-card:not(.hidden-by-filter)');
+    let total = visible.length;
+    let done = 0;
+    visible.forEach(card => {
+      const key = card.dataset.scope + '-' + card.dataset.step;
+      if (completedSteps.has(key)) done++;
+    });
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progress-pct').textContent = pct + '%';
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  // ── Restore saved state on page load ──
+  function restoreUI() {
+    completedSteps.forEach(key => {
+      const [scope, step] = key.split('-');
+      const card = document.querySelector(`.step-card[data-scope="${scope}"][data-step="${step}"]`);
+      if (!card) return;
+      card.classList.add('completed');
+      const btn = card.querySelector('.complete-btn');
+      if (btn) {
+        btn.classList.add('done');
+        btn.querySelector('svg').style.display = 'block';
+        btn.childNodes[btn.childNodes.length - 1].textContent = ' Completed';
+      }
+    });
+  }
+
+  // ── Init ──
+  loadProgress();
+  restoreUI();
+  setFilter(currentFilter);
+</script>
+</body>
+</html>
