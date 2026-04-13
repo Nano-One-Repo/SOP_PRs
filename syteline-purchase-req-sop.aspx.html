@@ -4,41 +4,193 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SOP — Purchase Requisitions in Infor SyteLine</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /* ── NANO ONE BRAND: Dark Mode (default) ── */
   :root {
-    --bg: #0f1117;
-    --surface: #181b24;
-    --surface-2: #1e2230;
-    --surface-3: #252a38;
-    --border: #2a2f40;
-    --border-active: #4a6cf7;
-    --text: #e4e7ef;
-    --text-dim: #8891a8;
-    --text-muted: #5a6380;
-    --accent: #4a6cf7;
-    --accent-glow: rgba(74,108,247,0.15);
-    --accent-2: #38c98d;
-    --accent-2-glow: rgba(56,201,141,0.15);
+    --bg: #1a1e24;
+    --surface: #22272e;
+    --surface-2: #2a3038;
+    --surface-3: #323a44;
+    --border: #3a424e;
+    --border-active: #8cc53f;
+    --text: #e8eaed;
+    --text-dim: #9aa3b0;
+    --text-muted: #69737b;
+    --accent: #8cc53f;
+    --accent-glow: rgba(140,197,63,0.15);
+    --accent-2: #8cc53f;
+    --accent-2-glow: rgba(140,197,63,0.12);
     --ess: #f59e42;
     --ess-glow: rgba(245,158,66,0.12);
-    --full: #4a6cf7;
-    --full-glow: rgba(74,108,247,0.12);
-    --warn: #f87171;
-    --warn-glow: rgba(248,113,113,0.1);
+    --full: #8cc53f;
+    --full-glow: rgba(140,197,63,0.12);
+    --warn: #e85d5d;
+    --warn-glow: rgba(232,93,93,0.1);
     --radius: 10px;
     --radius-lg: 16px;
+    --heading-color: #8cc53f;
   }
+
+  /* ── NANO ONE BRAND: Light Mode ── */
+  .light-mode {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #f0f2f5;
+    --surface-3: #e8eaed;
+    --border: #d4d8de;
+    --border-active: #6ba02e;
+    --text: #292e31;
+    --text-dim: #69737b;
+    --text-muted: #9aa3b0;
+    --accent: #6ba02e;
+    --accent-glow: rgba(140,197,63,0.1);
+    --accent-2: #6ba02e;
+    --accent-2-glow: rgba(140,197,63,0.08);
+    --ess: #d4820e;
+    --ess-glow: rgba(212,130,14,0.08);
+    --full: #6ba02e;
+    --full-glow: rgba(107,160,46,0.08);
+    --warn: #cc3d3d;
+    --warn-glow: rgba(204,61,61,0.06);
+    --heading-color: #4a8520;
+  }
+  .light-mode .header h1 {
+    background: linear-gradient(135deg, var(--text), var(--text-dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .light-mode .step-number {
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+  .light-mode body::before { display: none; }
+  .light-mode .license-btn.active-ess {
+    background: linear-gradient(135deg, var(--ess), #c07510);
+    box-shadow: 0 4px 20px var(--ess-glow);
+  }
+  .light-mode .license-btn.active-full {
+    background: linear-gradient(135deg, #6ba02e, #4a8520);
+    box-shadow: 0 4px 20px var(--full-glow);
+  }
+  .light-mode .nav-path { color: #a67100; }
+  .light-mode .nav-path.full-path { color: #4a8520; }
+  .light-mode .tag-ess { background: rgba(212,130,14,0.1); color: #a67100; border-color: rgba(212,130,14,0.2); }
+  .light-mode .tag-full { background: rgba(107,160,46,0.1); color: #4a8520; border-color: rgba(107,160,46,0.2); }
+  .light-mode .tag-both { background: rgba(107,160,46,0.1); color: #4a8520; border-color: rgba(107,160,46,0.2); }
+  .light-mode .tip-box.info { background: rgba(140,197,63,0.08); border-color: rgba(140,197,63,0.2); color: #3d6e18; }
+  .light-mode .tip-box.warning { background: rgba(204,61,61,0.06); border-color: rgba(204,61,61,0.15); color: #993030; }
+  .light-mode .tip-box.success { background: rgba(140,197,63,0.08); border-color: rgba(140,197,63,0.2); color: #3d6e18; }
+  .light-mode .diff-ess { background: rgba(212,130,14,0.06); border-color: rgba(212,130,14,0.15); color: #8a5a00; }
+  .light-mode .diff-full { background: rgba(107,160,46,0.06); border-color: rgba(107,160,46,0.15); color: #3d6e18; }
+  .light-mode .diff-label { color: inherit; }
+  .light-mode .substep-text strong { color: #4a8520; }
+  .light-mode .field-table td:first-child { color: #4a8520; }
+  .light-mode .ess-limits-panel { border-color: rgba(212,130,14,0.3); }
+  .light-mode .ess-limits-title { color: #a67100; }
+  .light-mode .limit-card-title { color: #a67100; }
+  .light-mode .shortcut-box-title { color: #4a8520; }
+  .light-mode .rule-callout { background: rgba(140,197,63,0.06); border-color: rgba(140,197,63,0.25); }
+  .light-mode .rule-callout-title { color: #4a8520; }
+  .light-mode kbd { background: #e8eaed; border-color: #d4d8de; color: #292e31; }
+  .light-mode .progress-fill { background: linear-gradient(90deg, #6ba02e, #8cc53f); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.65;
     min-height: 100vh;
   }
+
+
+
+  /* THEME TOGGLE */
+  .theme-toggle-wrap {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 1000;
+  }
+  .theme-toggle-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .theme-toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: scale(1.05);
+  }
+  .theme-toggle-btn svg { width: 20px; height: 20px; }
+  .theme-sun { display: none; }
+  .theme-moon { display: block; }
+  .light-mode .theme-sun { display: block; }
+  .light-mode .theme-moon { display: none; }
+
+  /* LANGUAGE TOGGLE */
+  .lang-toggle-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .lang-toggle {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px;
+    gap: 3px;
+  }
+  .lang-btn {
+    padding: 6px 18px;
+    border: none;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+  .lang-btn.active {
+    background: var(--surface-3);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .lang-btn:hover:not(.active) {
+    color: var(--text);
+  }
+  /* i18n visibility */
+  [data-lang="fr"] { display: none; }
+  .lang-fr [data-lang="en"] { display: none; }
+  .lang-fr [data-lang="fr"] { display: inline; }
+  .lang-fr div[data-lang="fr"],
+  .lang-fr p[data-lang="fr"],
+  .lang-fr span[data-lang="fr"],
+  .lang-fr li[data-lang="fr"],
+  .lang-fr tr[data-lang="fr"],
+  .lang-fr td[data-lang="fr"],
+  .lang-fr th[data-lang="fr"] { display: revert; }
+  .lang-fr div[data-lang="en"],
+  .lang-fr p[data-lang="en"],
+  .lang-fr span[data-lang="en"],
+  .lang-fr li[data-lang="en"],
+  .lang-fr tr[data-lang="en"],
+  .lang-fr td[data-lang="en"],
+  .lang-fr th[data-lang="en"] { display: none; }
 
   /* Grain overlay */
   body::before {
@@ -69,7 +221,7 @@
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    background: linear-gradient(90deg, var(--accent), #69737b);
     border-radius: 2px;
   }
   .header .badge {
@@ -81,13 +233,13 @@
     text-transform: uppercase;
     color: var(--accent);
     background: var(--accent-glow);
-    border: 1px solid rgba(74,108,247,0.2);
+    border: 1px solid rgba(140,197,63,0.2);
     padding: 6px 16px;
     border-radius: 100px;
     margin-bottom: 20px;
   }
   .header h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: clamp(28px, 5vw, 42px);
     font-weight: 800;
     letter-spacing: -0.5px;
@@ -122,7 +274,7 @@
     padding: 10px 28px;
     border: none;
     border-radius: 100px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -137,7 +289,7 @@
     box-shadow: 0 4px 20px var(--ess-glow);
   }
   .license-btn.active-full {
-    background: linear-gradient(135deg, var(--full), #3a5ad6);
+    background: linear-gradient(135deg, #6ba02e, #4a8520);
     color: #fff;
     box-shadow: 0 4px 20px var(--full-glow);
   }
@@ -189,7 +341,7 @@
   }
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    background: linear-gradient(90deg, var(--accent), #69737b);
     border-radius: 100px;
     transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -270,7 +422,7 @@
     font-family: 'JetBrains Mono', monospace;
   }
   .tag-ess { background: var(--ess-glow); color: var(--ess); border: 1px solid rgba(245,158,66,0.2); }
-  .tag-full { background: var(--full-glow); color: var(--full); border: 1px solid rgba(74,108,247,0.2); }
+  .tag-full { background: var(--full-glow); color: var(--full); border: 1px solid rgba(140,197,63,0.2); }
   .tag-both { background: var(--accent-2-glow); color: var(--accent-2); border: 1px solid rgba(56,201,141,0.2); }
 
   .step-chevron {
@@ -353,7 +505,7 @@
   }
   .tip-box.info {
     background: var(--accent-glow);
-    border: 1px solid rgba(74,108,247,0.15);
+    border: 1px solid rgba(140,197,63,0.15);
     color: #a0b4ff;
   }
   .tip-box.warning {
@@ -382,7 +534,7 @@
   }
   .diff-full {
     background: var(--full-glow);
-    border: 1px solid rgba(74,108,247,0.15);
+    border: 1px solid rgba(140,197,63,0.15);
     color: #a0b4ff;
   }
   .diff-label {
@@ -436,7 +588,7 @@
     border-radius: 100px;
     background: var(--surface-2);
     color: var(--text-dim);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -593,6 +745,121 @@
     margin-top: 16px;
   }
 
+  /* SCREENSHOT PLACEHOLDER */
+  .screenshot-block {
+    margin: 14px 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+  .screenshot-block img {
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid var(--border);
+  }
+  .screenshot-placeholder {
+    width: 100%;
+    min-height: 180px;
+    background: var(--surface-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .screenshot-placeholder svg {
+    opacity: 0.4;
+  }
+  .screenshot-caption {
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    background: var(--surface-2);
+  }
+
+  /* SHIPPING RULE CALLOUT */
+  .rule-callout {
+    margin-top: 14px;
+    padding: 16px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(74,108,247,0.08), rgba(56,201,141,0.08));
+    border: 1px solid rgba(56,201,141,0.25);
+  }
+  .rule-callout-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rule-callout ol {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text);
+    font-size: 13.5px;
+    line-height: 1.8;
+  }
+  .rule-callout ol li { padding-left: 4px; }
+  .rule-callout ol li strong { color: var(--accent-2); }
+
+  /* KEYBOARD SHORTCUTS BOX */
+  .shortcut-box {
+    margin-top: 14px;
+    padding: 16px;
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+  .shortcut-box-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .shortcut-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13.5px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+  .shortcut-row:last-of-type { border-bottom: none; }
+  .shortcut-label {
+    min-width: 80px;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+  kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    box-shadow: 0 1px 0 var(--border);
+  }
+
   .reset-btn {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -634,11 +901,29 @@
 </head>
 <body>
 
+
+  <!-- Theme Toggle (fixed) -->
+  <div class="theme-toggle-wrap">
+    <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+
 <div class="container" id="app">
   <div class="header">
-    <div class="badge">Standard Operating Procedure</div>
-    <h1>Purchase Requisitions in Infor SyteLine</h1>
-    <p>A step-by-step interactive guide for creating purchase requisitions — covering both Employee Self Service (ESS) and Full License workflows.</p>
+    <div class="badge"><span data-lang="en">Standard Operating Procedure</span><span data-lang="fr">Procédure opérationnelle standard</span></div>
+    <h1><span data-lang="en">Purchase Requisitions in Infor SyteLine</span><span data-lang="fr">Demandes d'achat dans Infor SyteLine</span></h1>
+    <p><span data-lang="en">A step-by-step interactive guide for creating purchase requisitions — covering both Employee Self Service (ESS) and Full License workflows.</span><span data-lang="fr">Un guide interactif étape par étape pour créer des demandes d'achat — couvrant les flux de travail Libre-service employé (ESS) et Licence complète.</span></p>
+  </div>
+
+
+  <!-- Language Toggle -->
+  <div class="lang-toggle-wrap">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">FR</button>
+    </div>
   </div>
 
   <!-- License Toggle -->
@@ -659,9 +944,9 @@
   <!-- Progress -->
   <div class="progress-bar-wrap">
     <div class="progress-header">
-      <span class="progress-label">Completion</span>
+      <span class="progress-label"><span data-lang="en">Completion</span><span data-lang="fr">Achèvement</span></span>
       <span class="progress-pct" id="progress-pct">0%</span>
-      <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+      <button class="reset-btn" onclick="resetProgress()"><span data-lang="en">Reset Progress</span><span data-lang="fr">Réinitialiser</span></button>
     </div>
     <div class="progress-track">
       <div class="progress-fill" id="progress-fill" style="width:0%"></div>
@@ -675,8 +960,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
       </div>
       <div class="ess-limits-title-wrap">
-        <div class="ess-limits-title">ESS License Limitations</div>
-        <div class="ess-limits-subtitle">What ESS users cannot do vs. Full License holders</div>
+        <div class="ess-limits-title"><span data-lang="en">ESS License Limitations</span><span data-lang="fr">Limitations de la licence ESS</span></div>
+        <div class="ess-limits-subtitle"><span data-lang="en">What ESS users cannot do vs. Full License holders</span><span data-lang="fr">Ce que les utilisateurs ESS ne peuvent pas faire par rapport aux détenteurs de licence complète</span></div>
       </div>
       <svg class="ess-limits-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
@@ -684,63 +969,69 @@
       <div class="ess-limits-content">
 
         <div class="ess-limits-intro">
-          The Employee Self Service (ESS) license is designed for basic self-service tasks. When it comes to purchase requisitions, ESS users will encounter several restrictions compared to Full License holders.
+          <span data-lang="en">The Employee Self Service (ESS) license is designed for basic self-service tasks. When it comes to purchase requisitions, ESS users will encounter several restrictions compared to Full License holders.</span><span data-lang="fr">La licence Libre-service employé (ESS) est conçue pour les tâches de base en libre-service. En ce qui concerne les demandes d'achat, les utilisateurs ESS rencontreront plusieurs restrictions par rapport aux détenteurs de licence complète.</span>
         </div>
 
         <div class="limits-grid">
           <div class="limit-card">
             <div class="limit-card-icon">🔒</div>
-            <div class="limit-card-title">Simplified Form Access</div>
-            <div class="limit-card-desc">ESS users only see the ESS portal view of the Purchase Requisition form. You will not have access to the full SyteLine rich client menus, navigation tree, or Quick Search (Ctrl+Q).</div>
+            <div class="limit-card-title"><span data-lang="en">Simplified Form Access</span><span data-lang="fr">Accès simplifié au formulaire</span></div>
+            <div class="limit-card-desc"><span data-lang="en">ESS users only see the ESS portal view of the Purchase Requisition form. You will not have access to the full SyteLine rich client menus, navigation tree, or Quick Search (Ctrl+Q).</span><span data-lang="fr">Les utilisateurs ESS ne voient que la vue portail ESS du formulaire de demande d'achat. Vous n'aurez pas accès aux menus complets du client SyteLine, à l'arborescence de navigation, ni à la recherche rapide (Ctrl+Q).</span></div>
           </div>
 
           <div class="limit-card">
             <div class="limit-card-icon">📉</div>
-            <div class="limit-card-title">Fewer Fields Available</div>
-            <div class="limit-card-desc">Many advanced fields are hidden or read-only in ESS — including GL Account overrides, account distribution splits, project codes, buyer assignment, warehouse selection, and tax codes. These are typically set by your approver or purchasing agent.</div>
+            <div class="limit-card-title"><span data-lang="en">Fewer Fields Available</span><span data-lang="fr">Moins de champs disponibles</span></div>
+            <div class="limit-card-desc"><span data-lang="en">Many advanced fields are hidden or read-only in ESS — including GL Account overrides, account distribution splits, project codes, buyer assignment, warehouse selection, and tax codes. These are typically set by your approver or purchasing agent.</span><span data-lang="fr">De nombreux champs avancés sont masqués ou en lecture seule dans ESS — y compris les remplacements de compte GL, les répartitions de comptes, les codes de projet, l'affectation de l'acheteur, la sélection d'entrepôt et les codes de taxe. Ceux-ci sont généralement définis par votre approbateur ou agent d'achat.</span></div>
           </div>
 
           <div class="limit-card">
             <div class="limit-card-icon">👤</div>
-            <div class="limit-card-title">Own Requisitions Only</div>
-            <div class="limit-card-desc">ESS users can only view and manage requisitions they have personally created. You cannot search, view, or edit requisitions submitted by other employees.</div>
+            <div class="limit-card-title"><span data-lang="en">Own Requisitions Only</span><span data-lang="fr">Vos demandes uniquement</span></div>
+            <div class="limit-card-desc"><span data-lang="en">ESS users can only view and manage requisitions they have personally created. You cannot search, view, or edit requisitions submitted by other employees.</span><span data-lang="fr">Les utilisateurs ESS ne peuvent voir et gérer que les demandes qu'ils ont personnellement créées. Vous ne pouvez pas rechercher, consulter ou modifier les demandes soumises par d'autres employés.</span></div>
           </div>
 
           <div class="limit-card">
             <div class="limit-card-icon">🚫</div>
-            <div class="limit-card-title">No PO Conversion</div>
-            <div class="limit-card-desc">ESS users cannot convert approved requisitions into Purchase Orders. That step is handled by the Purchasing department using a Full License.</div>
+            <div class="limit-card-title"><span data-lang="en">No PO Conversion</span><span data-lang="fr">Pas de conversion en BC</span></div>
+            <div class="limit-card-desc"><span data-lang="en">ESS users cannot convert approved requisitions into Purchase Orders. That step is handled by the Purchasing department using a Full License.</span><span data-lang="fr">Les utilisateurs ESS ne peuvent pas convertir les demandes approuvées en bons de commande. Cette étape est gérée par le service des achats avec une licence complète.</span></div>
           </div>
 
           <div class="limit-card">
             <div class="limit-card-icon">📊</div>
-            <div class="limit-card-title">No Reporting or Analytics</div>
-            <div class="limit-card-desc">Purchasing reports, requisition-to-PO cross references, spend analysis, and other reporting forms are not available in the ESS portal.</div>
+            <div class="limit-card-title"><span data-lang="en">No Reporting or Analytics</span><span data-lang="fr">Pas de rapports ni d'analyses</span></div>
+            <div class="limit-card-desc"><span data-lang="en">Purchasing reports, requisition-to-PO cross references, spend analysis, and other reporting forms are not available in the ESS portal.</span><span data-lang="fr">Les rapports d'achat, les références croisées demande-BC, l'analyse des dépenses et les autres formulaires de rapport ne sont pas disponibles dans le portail ESS.</span></div>
           </div>
 
           <div class="limit-card">
             <div class="limit-card-icon">⚙️</div>
-            <div class="limit-card-title">No Master Data Access</div>
-            <div class="limit-card-desc">ESS users cannot view or modify master data such as the Vendor Master, Item Master, or Chart of Accounts. You can look up existing items/vendors within the requisition form, but cannot create or edit them.</div>
+            <div class="limit-card-title"><span data-lang="en">No Master Data Access</span><span data-lang="fr">Pas d'accès aux données de base</span></div>
+            <div class="limit-card-desc"><span data-lang="en">ESS users cannot view or modify master data such as the Vendor Master, Item Master, or Chart of Accounts. You can look up existing items/vendors within the requisition form, but cannot create or edit them.</span><span data-lang="fr">Les utilisateurs ESS ne peuvent pas consulter ni modifier les données de base telles que le fichier fournisseur, le fichier article ou le plan comptable. Vous pouvez rechercher des articles/fournisseurs existants dans le formulaire de demande, mais vous ne pouvez pas les créer ni les modifier.</span></div>
           </div>
 
           <div class="limit-card">
             <div class="limit-card-icon">✅</div>
-            <div class="limit-card-title">No Approval Authority</div>
-            <div class="limit-card-desc">ESS users can submit requisitions for approval but cannot approve or reject requisitions from others. Approval authority requires a Full License with the appropriate workflow role.</div>
+            <div class="limit-card-title"><span data-lang="en">Limited Approval Authority</span><span data-lang="fr">Autorité d'approbation limitée</span></div>
+            <div class="limit-card-desc"><span data-lang="en">ESS users can submit requisitions for approval. ESS <strong>managers</strong> can approve requisitions for their direct reports. However, ESS users cannot approve invoices — invoice approval requires a Full License.</span><span data-lang="fr">Les utilisateurs ESS peuvent soumettre des demandes pour approbation. Les <strong>gestionnaires</strong> ESS peuvent approuver les demandes de leurs subordonnés directs. Cependant, les utilisateurs ESS ne peuvent pas approuver les factures — l'approbation des factures nécessite une licence complète.</span></div>
+          </div>
+
+          <div class="limit-card">
+            <div class="limit-card-icon">🧾</div>
+            <div class="limit-card-title"><span data-lang="en">No Invoice Approval</span><span data-lang="fr">Pas d'approbation de factures</span></div>
+            <div class="limit-card-desc"><span data-lang="en">ESS users cannot approve invoices. Invoice approval requires a Full License with the appropriate accounts payable workflow role. ESS is limited to creating and submitting purchase requisitions only.</span><span data-lang="fr">Les utilisateurs ESS ne peuvent pas approuver les factures. L'approbation des factures nécessite une licence complète avec le rôle de flux de travail des comptes fournisseurs approprié. L'ESS est limité à la création et à la soumission de demandes d'achat uniquement.</span></div>
           </div>
 
           <div class="limit-card">
             <div class="limit-card-icon">📝</div>
-            <div class="limit-card-title">Limited Edit After Submission</div>
-            <div class="limit-card-desc">Once a requisition is submitted, ESS users generally cannot recall or edit it. If changes are needed, contact your approver to reject it back to you, or reach out to the Purchasing team.</div>
+            <div class="limit-card-title"><span data-lang="en">Limited Edit After Submission</span><span data-lang="fr">Modification limitée après soumission</span></div>
+            <div class="limit-card-desc"><span data-lang="en">Once a requisition is submitted, ESS users generally cannot recall or edit it. If changes are needed, contact your approver to reject it back to you, or reach out to the Purchasing team.</span><span data-lang="fr">Une fois une demande soumise, les utilisateurs ESS ne peuvent généralement pas la rappeler ni la modifier. Si des modifications sont nécessaires, contactez votre approbateur pour qu'il vous la renvoie, ou communiquez avec l'équipe des achats.</span></div>
           </div>
         </div>
 
         <div class="ess-limits-footer">
           <div class="tip-box info" style="margin-top:0;">
             <span class="tip-icon">💡</span>
-            <span>If you need capabilities beyond the ESS license, speak with your System Administrator about a license upgrade. Your organization's Infor license agreement determines how many Full License seats are available.</span>
+            <span><span data-lang="en">If you need capabilities beyond the ESS license, speak with your System Administrator about a license upgrade. Your organization's Infor license agreement determines how many Full License seats are available.</span><span data-lang="fr">Si vous avez besoin de fonctionnalités au-delà de la licence ESS, parlez à votre administrateur système d'une mise à niveau de licence. Le contrat de licence Infor de votre organisation détermine le nombre de sièges de licence complète disponibles.</span></span>
           </div>
         </div>
 
@@ -749,40 +1040,40 @@
   </div>
 
   <!-- ====== SECTION: BEFORE YOU BEGIN ====== -->
-  <div class="section-divider">Before You Begin</div>
+  <div class="section-divider"><span data-lang="en">Before You Begin</span><span data-lang="fr">Avant de commencer</span></div>
 
   <!-- Step 1 -->
   <div class="step-card" data-scope="both" data-step="1">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">01</div>
       <div class="step-title-wrap">
-        <div class="step-title">Gather Required Information</div>
-        <div class="step-subtitle">Collect details before you begin</div>
+        <div class="step-title"><span data-lang="en">Gather Required Information</span><span data-lang="fr">Rassembler les informations requises</span></div>
+        <div class="step-subtitle"><span data-lang="en">Collect details before you begin</span><span data-lang="fr">Collecter les détails avant de commencer</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <div class="step-tags"><span class="tag tag-both"><span data-lang="en">Both</span><span data-lang="fr">Les deux</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>Have the following information ready before navigating to the requisition form. This ensures efficient data entry and reduces errors.</p>
+        <p data-lang="en">Have the following information ready before navigating to the requisition form. This ensures efficient data entry and reduces errors.</p><p data-lang="fr">Ayez les informations suivantes à portée de main avant de naviguer vers le formulaire de demande. Cela garantit une saisie de données efficace et réduit les erreurs.</p>
 
         <table class="field-table">
-          <thead><tr><th>Information</th><th>Description</th></tr></thead>
+          <thead><tr><th><span data-lang="en">Information</span><span data-lang="fr">Information</span></th><th><span data-lang="en">Description</span><span data-lang="fr">Description</span></th></tr></thead>
           <tbody>
-            <tr><td>Item / Description</td><td>What you need to purchase — item number (if known) or a clear text description</td></tr>
-            <tr><td>Quantity</td><td>Number of units required</td></tr>
-            <tr><td>Unit of Measure</td><td>EA (each), BX (box), CS (case), etc.</td></tr>
-            <tr><td>Estimated Unit Cost</td><td>Approximate price per unit — check past POs or vendor quotes</td></tr>
-            <tr><td>Vendor (if known)</td><td>Preferred supplier name or vendor number</td></tr>
-            <tr><td>Needed-By Date</td><td>The date you require the goods or services</td></tr>
-            <tr><td>GL Account / Cost Center</td><td>The account to charge — department or project code</td></tr>
-            <tr><td>Justification / Notes</td><td>Business reason for the purchase (may be required for approvals)</td></tr>
+            <tr><td><span data-lang="en">Item / Description</span><span data-lang="fr">Article / Description</span></td><td><span data-lang="en">What you need to purchase — item number (if known) or a clear text description</span><span data-lang="fr">Ce que vous devez acheter — numéro d'article (si connu) ou une description textuelle claire</span></td></tr>
+            <tr><td><span data-lang="en">Quantity</span><span data-lang="fr">Quantité</span></td><td><span data-lang="en">Number of units required</span><span data-lang="fr">Nombre d'unités requises</span></td></tr>
+            <tr><td><span data-lang="en">Unit of Measure</span><span data-lang="fr">Unité de mesure</span></td><td><span data-lang="en">EA (each), BX (box), CS (case), etc.</span><span data-lang="fr">EA (chaque), BX (boîte), CS (caisse), etc.</span></td></tr>
+            <tr><td><span data-lang="en">Estimated Unit Cost</span><span data-lang="fr">Coût unitaire estimé</span></td><td><span data-lang="en">Approximate price per unit — check past POs or vendor quotes</span><span data-lang="fr">Prix approximatif par unité — vérifiez les BC passés ou les devis fournisseurs</span></td></tr>
+            <tr><td><span data-lang="en">Vendor (if known)</span><span data-lang="fr">Fournisseur (si connu)</span></td><td><span data-lang="en">Preferred supplier name or vendor number</span><span data-lang="fr">Nom du fournisseur préféré ou numéro de fournisseur</span></td></tr>
+            <tr><td><span data-lang="en">Due Date</span><span data-lang="fr">Date requise</span></td><td><span data-lang="en">The date you require the goods or services</span><span data-lang="fr">La date à laquelle vous avez besoin des biens ou services</span></td></tr>
+            <tr><td><span data-lang="en">GL Account / Cost Center</span><span data-lang="fr">Compte GL / Centre de coûts</span></td><td><span data-lang="en">The account to charge — department or project code</span><span data-lang="fr">Le compte à débiter — code de département ou de projet</span></td></tr>
+            <tr><td><span data-lang="en">Justification / Notes</span><span data-lang="fr">Justification / Notes</span></td><td><span data-lang="en">Business reason for the purchase (may be required for approvals)</span><span data-lang="fr">Raison commerciale de l'achat (peut être requise pour les approbations)</span></td></tr>
           </tbody>
         </table>
 
         <div class="tip-box info">
           <span class="tip-icon">📋</span>
-          <span>For recurring purchases, check if a <strong>Blanket PO</strong> or standing order already exists. Your purchasing team can advise.</span>
+          <span><span data-lang="en">For recurring purchases, check if a <strong>Blanket PO</strong> or standing order already exists. Your purchasing team can advise.</span><span data-lang="fr">Pour les achats récurrents, vérifiez si un <strong>bon de commande ouvert</strong> ou une commande permanente existe déjà. Votre équipe d'achats peut vous conseiller.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -794,15 +1085,15 @@
   </div>
 
   <!-- ====== SECTION: NAVIGATION ====== -->
-  <div class="section-divider">Navigate to the Requisition Form</div>
+  <div class="section-divider"><span data-lang="en">Navigate to the Requisition Form</span><span data-lang="fr">Naviguer vers le formulaire de demande</span></div>
 
   <!-- Step 2 (ESS) -->
   <div class="step-card" data-scope="ess" data-step="2">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">02</div>
       <div class="step-title-wrap">
-        <div class="step-title">Open the ESS Purchase Requisition Form</div>
-        <div class="step-subtitle">Navigate through the Employee Self Service portal</div>
+        <div class="step-title"><span data-lang="en">Open the ESS Purchase Requisition Form</span><span data-lang="fr">Ouvrir le formulaire de demande d'achat ESS</span></div>
+        <div class="step-subtitle"><span data-lang="en">Navigate through the Employee Self Service portal</span><span data-lang="fr">Naviguer via le portail Libre-service employé</span></div>
       </div>
       <div class="step-tags"><span class="tag tag-ess">ESS</span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -813,20 +1104,29 @@
 
         <div class="substep">
           <span class="substep-num">2a</span>
-          <span class="substep-text">From the SyteLine homepage, click on the <strong>Employee Self Service</strong> tile or menu item. This is your main ESS dashboard.</span>
+          <span class="substep-text"><span data-lang="en">Click the <strong>9-dot grid menu</strong> (⋮⋮⋮) in the top-left corner of the screen to open the application launcher.</span><span data-lang="fr">Cliquez sur le <strong>menu grille à 9 points</strong> (⋮⋮⋮) dans le coin supérieur gauche de l'écran pour ouvrir le lanceur d'applications.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">2b</span>
-          <span class="substep-text">Locate and click <strong>Purchase Requisitions</strong> in the ESS menu. Depending on your configuration, this may be under a "Purchasing" or "Requests" sub-menu.</span>
+          <span class="substep-text"><span data-lang="en">From the SyteLine homepage, click on the <strong>Employee Self Service</strong> tile or menu item. This is your main ESS dashboard.</span><span data-lang="fr">Depuis la page d'accueil SyteLine, cliquez sur la tuile ou l'élément de menu <strong>Libre-service employé</strong>. C'est votre tableau de bord ESS principal.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">2c</span>
-          <span class="substep-text">The <strong>Purchase Requisition List</strong> will open, showing any existing requisitions you've previously created. Click <strong>New</strong> to create a new requisition.</span>
+          <span class="substep-text"><span data-lang="en">Locate and click <strong>Purchase Requisitions</strong> in the ESS menu. Depending on your configuration, this may be under a "Purchasing" or "Requests" sub-menu.</span><span data-lang="fr">Trouvez et cliquez sur <strong>Demandes d'achat</strong> dans le menu ESS. Selon votre configuration, cela peut se trouver sous un sous-menu « Achats » ou « Demandes ».</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">2d</span>
+          <span class="substep-text"><span data-lang="en">The <strong>Purchase Requisition List</strong> will open, showing any existing requisitions you've previously created. Click <strong>New</strong> to create a new requisition.</span><span data-lang="fr">La <strong>liste des demandes d'achat</strong> s'ouvrira, affichant les demandes que vous avez précédemment créées. Cliquez sur <strong>Nouveau</strong> pour créer une nouvelle demande.</span></span>
+        </div>
+
+        <div class="screenshot-block">
+          <img src="images/01-ess-portal.png" alt="ESS Portal" loading="lazy" style="width:100%; display:block;">
+          <div class="screenshot-caption"><span data-lang="en">ESS Portal — Purchase Requisition list view with "New" button highlighted</span><span data-lang="fr">Portail ESS — Vue de la liste des demandes d'achat avec le bouton « Nouveau » mis en évidence</span></div>
         </div>
 
         <div class="tip-box info">
           <span class="tip-icon">💡</span>
-          <span>ESS navigation is simplified compared to full-client. If you don't see "Purchase Requisitions," your administrator may need to enable it in your ESS configuration or role.</span>
+          <span><span data-lang="en">ESS navigation is simplified compared to full-client. If you don't see "Purchase Requisitions," your administrator may need to enable it in your ESS configuration or role.</span><span data-lang="fr">La navigation ESS est simplifiée par rapport au client complet. Si vous ne voyez pas « Demandes d'achat », votre administrateur devra peut-être l'activer dans votre configuration ou rôle ESS.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -842,8 +1142,8 @@
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">02</div>
       <div class="step-title-wrap">
-        <div class="step-title">Open the Purchase Requisition Form</div>
-        <div class="step-subtitle">Navigate through the SyteLine client menus</div>
+        <div class="step-title"><span data-lang="en">Open the Purchase Requisition Form</span><span data-lang="fr">Ouvrir le formulaire de demande d'achat</span></div>
+        <div class="step-subtitle"><span data-lang="en">Navigate through the SyteLine client menus</span><span data-lang="fr">Naviguer via les menus du client SyteLine</span></div>
       </div>
       <div class="step-tags"><span class="tag tag-full">Full</span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -854,24 +1154,33 @@
 
         <div class="substep">
           <span class="substep-num">2a</span>
-          <span class="substep-text">From the SyteLine main menu or navigation pane, expand the <strong>Purchasing</strong> module.</span>
+          <span class="substep-text"><span data-lang="en">Click the <strong>9-dot grid menu</strong> (⋮⋮⋮) in the top-left corner of the screen to open the application launcher, then select <strong>SyteLine</strong>.</span><span data-lang="fr">Cliquez sur le <strong>menu grille à 9 points</strong> (⋮⋮⋮) dans le coin supérieur gauche de l'écran pour ouvrir le lanceur d'applications, puis sélectionnez <strong>SyteLine</strong>.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">2b</span>
-          <span class="substep-text">Under Purchasing, expand <strong>Purchase Requisitions</strong> and click <strong>Purchase Requisitions</strong> to open the form.</span>
+          <span class="substep-text"><span data-lang="en">From the SyteLine main menu or navigation pane, expand the <strong>Purchasing</strong> module.</span><span data-lang="fr">Depuis le menu principal SyteLine ou le volet de navigation, développez le module <strong>Achats</strong>.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">2c</span>
-          <span class="substep-text">Alternatively, use the <strong>Quick Search</strong> bar (Ctrl+Q) and type <strong>"Purchase Requisitions"</strong> to jump directly to the form.</span>
+          <span class="substep-text"><span data-lang="en">Under Purchasing, expand <strong>Purchase Requisitions</strong> and click <strong>Purchase Requisitions</strong> to open the form.</span><span data-lang="fr">Sous Achats, développez <strong>Demandes d'achat</strong> et cliquez sur <strong>Demandes d'achat</strong> pour ouvrir le formulaire.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">2d</span>
-          <span class="substep-text">The form will open in <strong>Browse</strong> mode showing existing records. Click the <strong>New</strong> button (or press Ctrl+N) on the toolbar to create a new requisition.</span>
+          <span class="substep-text"><span data-lang="en">Alternatively, use the <strong>Quick Search</strong> bar (Ctrl+Q) and type <strong>"Purchase Requisitions"</strong> to jump directly to the form.</span><span data-lang="fr">Alternativement, utilisez la barre de <strong>recherche rapide</strong> (Ctrl+Q) et tapez <strong>« Demandes d'achat »</strong> pour accéder directement au formulaire.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">2e</span>
+          <span class="substep-text"><span data-lang="en">The form will open in <strong>Browse</strong> mode showing existing records. Click the <strong>New</strong> button (or press Ctrl+N) on the toolbar to create a new requisition.</span><span data-lang="fr">Le formulaire s'ouvrira en mode <strong>Navigation</strong> affichant les enregistrements existants. Cliquez sur le bouton <strong>Nouveau</strong> (ou appuyez sur Ctrl+N) dans la barre d'outils pour créer une nouvelle demande.</span></span>
+        </div>
+
+        <div class="screenshot-block">
+          <img src="images/02-full-client-form.png" alt="Full Client" loading="lazy" style="width:100%; display:block;">
+          <div class="screenshot-caption"><span data-lang="en">Full Client — Purchase Requisitions form in Browse mode with "New" button on toolbar</span><span data-lang="fr">Client complet — Formulaire de demandes d'achat en mode Navigation avec le bouton « Nouveau » dans la barre d'outils</span></div>
         </div>
 
         <div class="tip-box info">
           <span class="tip-icon">⌨️</span>
-          <span>Full license users can also add the Purchase Requisitions form to their <strong>Favorites</strong> for quicker access in the future.</span>
+          <span><span data-lang="en">Full license users can also add the Purchase Requisitions form to their <strong>Favorites</strong> for quicker access in the future.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également ajouter le formulaire de demandes d'achat à leurs <strong>Favoris</strong> pour un accès plus rapide à l'avenir.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -883,53 +1192,62 @@
   </div>
 
   <!-- ====== SECTION: HEADER ====== -->
-  <div class="section-divider">Complete the Requisition Header</div>
+  <div class="section-divider"><span data-lang="en">Complete the Requisition Header</span><span data-lang="fr">Remplir l'en-tête de la demande</span></div>
 
   <!-- Step 3 -->
   <div class="step-card" data-scope="both" data-step="3">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">03</div>
       <div class="step-title-wrap">
-        <div class="step-title">Fill In the Requisition Header</div>
-        <div class="step-subtitle">Set top-level details: requester, date, status</div>
+        <div class="step-title"><span data-lang="en">Fill In the Requisition Header</span><span data-lang="fr">Remplir l'en-tête de la demande</span></div>
+        <div class="step-subtitle"><span data-lang="en">Set top-level details: requester, date, status</span><span data-lang="fr">Définir les détails principaux : demandeur, date, statut</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <div class="step-tags"><span class="tag tag-both"><span data-lang="en">Both</span><span data-lang="fr">Les deux</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>The header captures who is requesting, when it's needed, and general categorization. Some fields auto-populate based on your login.</p>
+        <p data-lang="en">The header captures who is requesting, when it's needed, and general categorization. Some fields auto-populate based on your login.</p><p data-lang="fr">L'en-tête capture qui fait la demande, quand c'est nécessaire, et la catégorisation générale. Certains champs se remplissent automatiquement en fonction de votre connexion.</p>
 
         <div class="substep">
           <span class="substep-num">3a</span>
-          <span class="substep-text"><strong>Requisition Number</strong> — typically auto-generated by the system. Do not modify unless your organization uses manual numbering.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Requisition Number</strong> — typically auto-generated by the system. Do not modify unless your organization uses manual numbering.</span><span data-lang="fr"><strong>Numéro de demande</strong> — généralement généré automatiquement par le système. Ne modifiez pas sauf si votre organisation utilise la numérotation manuelle.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">3b</span>
-          <span class="substep-text"><strong>Requester</strong> — will default to your user/employee ID. Verify this is correct.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Requester</strong> — will default to your user/employee ID. Verify this is correct.</span><span data-lang="fr"><strong>Demandeur</strong> — sera par défaut votre identifiant utilisateur/employé. Vérifiez que c'est correct.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">3c</span>
-          <span class="substep-text"><strong>Requisition Date</strong> — defaults to today's date. Adjust only if backdating is permitted by policy.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Requisition Date</strong> — defaults to today's date. Adjust only if backdating is permitted by policy.</span><span data-lang="fr"><strong>Date de la demande</strong> — par défaut la date du jour. Ajustez seulement si l'antidatation est permise par la politique.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">3d</span>
-          <span class="substep-text"><strong>Needed-By Date</strong> — enter the date you need the goods/services. This drives purchasing urgency and planning.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Due Date</strong> — enter the date you need the goods/services delivered by. This drives purchasing urgency and planning.</span><span data-lang="fr"><strong>Date d'échéance</strong> — entrez la date à laquelle vous avez besoin que les biens/services soient livrés. Cela détermine l'urgence et la planification des achats.</span></span>
         </div>
-        <div class="substep">
-          <span class="substep-num">3e</span>
-          <span class="substep-text"><strong>Status</strong> — will show as <strong>"Open"</strong> or <strong>"New"</strong> for a new record. Do not change this manually.</span>
+
+
+        <div class="screenshot-block">
+          <img src="images/03-header-fields.png" alt="Requisition Header" loading="lazy" style="width:100%; display:block;">
+          <div class="screenshot-caption"><span data-lang="en">Requisition Header — showing Requisition Number, Requester, Date, Due Date, and Status fields</span><span data-lang="fr">En-tête de la demande — affichant les champs Numéro de demande, Demandeur, Date, Date requise et Statut</span></div>
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">🔶</span>
+          <span><span data-lang="en">Mandatory fields are highlighted with an orange border. Ensure all highlighted fields are completed before saving.</span><span data-lang="fr">Les champs obligatoires sont mis en évidence avec une bordure orange. Assurez-vous que tous les champs surlignés sont remplis avant d'enregistrer.</span></span>
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">💡</span>
+          <span><span data-lang="en">Mandatory fields are highlighted on the form. Ensure all highlighted fields are filled in before saving.</span><span data-lang="fr">Les champs obligatoires sont mis en évidence sur le formulaire. Assurez-vous que tous les champs en surbrillance sont remplis avant d'enregistrer.</span></span>
         </div>
 
         <div class="diff-callout diff-full" style="margin-top:12px;">
-          <span class="diff-label">Full License — Additional Fields</span>
-          Full license users may also see: <strong>Warehouse</strong> (default receiving warehouse), <strong>Ship To</strong> address, <strong>Buyer Code</strong>, and <strong>Priority</strong>. Fill these if applicable to your organization's workflow.
+          <span class="diff-label"><span data-lang="en">Full License — Additional Fields</span><span data-lang="fr">Licence complète — Champs supplémentaires</span></span>
+          <span data-lang="en">Full license users may also see: <strong>Warehouse</strong> (default receiving warehouse), <strong>Ship To</strong> address, <strong>Buyer Code</strong>, and <strong>Priority</strong>. Fill these if applicable to your organization's workflow.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également voir : <strong>Entrepôt</strong> (entrepôt de réception par défaut), adresse <strong>Livrer à</strong>, <strong>Code acheteur</strong> et <strong>Priorité</strong>. Remplissez-les si applicable au flux de travail de votre organisation.</span>
         </div>
 
-        <div class="tip-box warning">
-          <span class="tip-icon">⚠️</span>
-          <span>Do not change the <strong>Status</strong> field manually. Status is managed by the system through the approval workflow.</span>
-        </div>
+
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
@@ -940,69 +1258,138 @@
   </div>
 
   <!-- ====== SECTION: LINE ITEMS ====== -->
-  <div class="section-divider">Add Line Items</div>
+  <div class="section-divider"><span data-lang="en">Add Line Items</span><span data-lang="fr">Ajouter des lignes d'articles</span></div>
 
-  <!-- Step 4 -->
-  <div class="step-card" data-scope="both" data-step="4">
+  <!-- Step 4 (ESS) -->
+  <div class="step-card" data-scope="ess" data-step="4">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">04</div>
       <div class="step-title-wrap">
-        <div class="step-title">Add Requisition Line Items</div>
-        <div class="step-subtitle">Enter item details, quantities, and costs</div>
+        <div class="step-title"><span data-lang="en">Add Requisition Line Items</span><span data-lang="fr">Ajouter les lignes de la demande</span></div>
+        <div class="step-subtitle"><span data-lang="en">Enter item details, quantities, and costs</span><span data-lang="fr">Saisir les détails des articles, quantités et coûts</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <div class="step-tags"><span class="tag tag-ess">ESS</span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>Each line item represents a distinct product or service you're requesting. You can add multiple lines to a single requisition.</p>
+        <p data-lang="en">Each line item represents a distinct product or service you're requesting. ESS users see a simplified view with fewer fields — focus on providing accurate descriptions, quantities, and costs.</p><p data-lang="fr">Chaque ligne représente un produit ou service distinct que vous demandez. Les utilisateurs ESS voient une vue simplifiée avec moins de champs — concentrez-vous sur la fourniture de descriptions, quantités et coûts précis.</p>
 
         <div class="substep">
           <span class="substep-num">4a</span>
-          <span class="substep-text">Click <strong>Add Line</strong> or navigate to the <strong>Lines</strong> tab/grid at the bottom of the form.</span>
+          <span class="substep-text"><span data-lang="en">Click <strong>Add Line</strong> to create a new line item.</span><span data-lang="fr">Cliquez sur <strong>Ajouter une ligne</strong> pour créer une nouvelle ligne d'article.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">4b</span>
-          <span class="substep-text"><strong>Item Number</strong> — If ordering a stocked/cataloged item, enter or look up the item number. The description, U/M, and cost may auto-populate from the item master. For non-stock items, leave blank and enter a manual description.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Description</strong> — Provide a clear, specific description of what you're ordering. Be detailed enough for the buyer to source correctly (e.g., "Safety goggles, ANSI Z87.1 rated, clear lens" rather than "goggles").</span><span data-lang="fr"><strong>Description</strong> — Fournissez une description claire et spécifique de ce que vous commandez. Soyez suffisamment détaillé pour que l'acheteur puisse s'approvisionner correctement (ex. : « Lunettes de sécurité, norme ANSI Z87.1, lentille transparente » plutôt que « lunettes »).</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">4c</span>
-          <span class="substep-text"><strong>Description</strong> — Provide a clear, specific description of what you're ordering. Be detailed enough for the buyer to source correctly (e.g., "Safety goggles, ANSI Z87.1 rated, clear lens" rather than "goggles").</span>
+          <span class="substep-text"><span data-lang="en"><strong>Quantity</strong> — Enter the number of units needed.</span><span data-lang="fr"><strong>Quantité</strong> — Entrez le nombre d'unités nécessaires.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">4d</span>
-          <span class="substep-text"><strong>Quantity</strong> — Enter the number of units needed.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Unit of Measure (U/M)</strong> — Select from the dropdown (EA, BX, CS, etc.). Ensure this matches how the vendor prices the item.</span><span data-lang="fr"><strong>Unité de mesure (U/M)</strong> — Sélectionnez dans le menu déroulant (EA, BX, CS, etc.). Assurez-vous que cela correspond à la façon dont le fournisseur facture l'article.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">4e</span>
-          <span class="substep-text"><strong>Unit of Measure (U/M)</strong> — Select from the dropdown (EA, BX, CS, etc.). Ensure this matches how the vendor prices the item.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Unit Cost / Estimated Price</strong> — Enter the estimated cost per unit. If unknown, provide your best estimate — this helps the approval process.</span><span data-lang="fr"><strong>Coût unitaire / Prix estimé</strong> — Entrez le coût estimé par unité. Si inconnu, fournissez votre meilleure estimation — cela aide le processus d'approbation.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">4f</span>
-          <span class="substep-text"><strong>Unit Cost / Estimated Price</strong> — Enter the estimated cost per unit. If unknown, provide your best estimate — this helps the approval process.</span>
-        </div>
-        <div class="substep">
-          <span class="substep-num">4g</span>
-          <span class="substep-text"><strong>Vendor</strong> — If you have a preferred vendor, enter or look up their vendor number. This is optional on the requisition but helps purchasing.</span>
-        </div>
-        <div class="substep">
-          <span class="substep-num">4h</span>
-          <span class="substep-text">To add more lines, click <strong>Add Line</strong> again and repeat the above for each item/service.</span>
-        </div>
-
-        <div class="diff-callout diff-full" style="margin-top:12px;">
-          <span class="diff-label">Full License — Additional Line Fields</span>
-          Full license users may also see and complete: <strong>GL Account</strong> (the expense account to charge), <strong>Project Code</strong>, <strong>Cost Center / Department</strong>, <strong>Delivery Address</strong>, and <strong>Tax Code</strong>. Fill these according to your organization's chart of accounts and purchasing policy.
-        </div>
-
-        <div class="diff-callout diff-ess" style="margin-top:8px;">
-          <span class="diff-label">ESS License — Simplified View</span>
-          ESS users typically see fewer fields per line. The GL Account and other advanced fields may be auto-assigned based on your department or the approver may set them during review. Focus on providing accurate item, quantity, and cost information.
+          <span class="substep-text"><span data-lang="en">To add more lines, click <strong>Add Line</strong> again and repeat the above for each item/service.</span><span data-lang="fr">Pour ajouter d'autres lignes, cliquez à nouveau sur <strong>Ajouter une ligne</strong> et répétez les étapes ci-dessus pour chaque article/service.</span></span>
         </div>
 
         <div class="tip-box info">
           <span class="tip-icon">💡</span>
-          <span>Use the <strong>Item Lookup</strong> (magnifying glass icon) to search existing items in the system. This ensures correct item numbers and avoids duplicates.</span>
+          <span><span data-lang="en">The GL Account and other advanced fields (Vendor, Project Code) may be auto-assigned based on your department or set by your approver during review. Focus on providing accurate item, quantity, and cost information.</span><span data-lang="fr">Le compte GL et les autres champs avancés (Fournisseur, Code de projet) peuvent être assignés automatiquement en fonction de votre département ou définis par votre approbateur lors de la révision. Concentrez-vous sur la fourniture d'informations précises sur l'article, la quantité et le coût.</span></span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 (Full) -->
+  <div class="step-card" data-scope="full" data-step="4">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">04</div>
+      <div class="step-title-wrap">
+        <div class="step-title"><span data-lang="en">Add Requisition Line Items</span><span data-lang="fr">Ajouter les lignes de la demande</span></div>
+        <div class="step-subtitle"><span data-lang="en">Enter item details, quantities, and costs</span><span data-lang="fr">Saisir les détails des articles, quantités et coûts</span></div>
+      </div>
+      <div class="step-tags"><span class="tag tag-full">Full</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p data-lang="en">Each line item represents a distinct product or service you're requesting. You can add multiple lines to a single requisition.</p><p data-lang="fr">Chaque ligne représente un produit ou service distinct que vous demandez. Vous pouvez ajouter plusieurs lignes à une seule demande.</p>
+
+        <div class="substep">
+          <span class="substep-num">4a</span>
+          <span class="substep-text"><span data-lang="en">Click <strong>Add Line</strong> or navigate to the <strong>Lines</strong> tab/grid at the bottom of the form.</span><span data-lang="fr">Cliquez sur <strong>Ajouter une ligne</strong> ou naviguez vers l'onglet/grille <strong>Lignes</strong> en bas du formulaire.</span></span>
+        </div>
+
+        <div class="screenshot-block">
+          <img src="images/04-line-items.png" alt="Line Items Grid" loading="lazy" style="width:100%; display:block;">
+          <div class="screenshot-caption"><span data-lang="en">Line Items Grid — showing Item, Description, Qty, U/M, Unit Cost, and Vendor columns</span><span data-lang="fr">Grille des lignes d'articles — affichant les colonnes Article, Description, Qté, U/M, Coût unitaire et Fournisseur</span></div>
+        </div>
+
+        <div class="substep">
+          <span class="substep-num">4b</span>
+          <span class="substep-text"><span data-lang="en"><strong>Item Number</strong> — If ordering a stocked/cataloged item, enter or look up the item number. The description, U/M, and cost may auto-populate from the item master. For non-stock items, leave blank and enter a manual description.</span><span data-lang="fr"><strong>Numéro d'article</strong> — Si vous commandez un article en stock/catalogué, entrez ou recherchez le numéro d'article. La description, l'U/M et le coût peuvent se remplir automatiquement à partir du fichier article. Pour les articles hors stock, laissez vide et entrez une description manuelle.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4c</span>
+          <span class="substep-text"><span data-lang="en"><strong>Description</strong> — Provide a clear, specific description of what you're ordering. Be detailed enough for the buyer to source correctly (e.g., "Safety goggles, ANSI Z87.1 rated, clear lens" rather than "goggles").</span><span data-lang="fr"><strong>Description</strong> — Fournissez une description claire et spécifique de ce que vous commandez. Soyez suffisamment détaillé pour que l'acheteur puisse s'approvisionner correctement (ex. : « Lunettes de sécurité, norme ANSI Z87.1, lentille transparente » plutôt que « lunettes »).</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4d</span>
+          <span class="substep-text"><span data-lang="en"><strong>Quantity</strong> — Enter the number of units needed.</span><span data-lang="fr"><strong>Quantité</strong> — Entrez le nombre d'unités nécessaires.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4e</span>
+          <span class="substep-text"><span data-lang="en"><strong>Unit of Measure (U/M)</strong> — Select from the dropdown (EA, BX, CS, etc.). Ensure this matches how the vendor prices the item.</span><span data-lang="fr"><strong>Unité de mesure (U/M)</strong> — Sélectionnez dans le menu déroulant (EA, BX, CS, etc.). Assurez-vous que cela correspond à la façon dont le fournisseur facture l'article.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4f</span>
+          <span class="substep-text"><span data-lang="en"><strong>Unit Cost / Estimated Price</strong> — Enter the estimated cost per unit. If unknown, provide your best estimate — this helps the approval process.</span><span data-lang="fr"><strong>Coût unitaire / Prix estimé</strong> — Entrez le coût estimé par unité. Si inconnu, fournissez votre meilleure estimation — cela aide le processus d'approbation.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4g</span>
+          <span class="substep-text"><span data-lang="en"><strong>Vendor</strong> — If you have a preferred vendor, enter or look up their vendor number. This is optional on the requisition but helps purchasing.</span><span data-lang="fr"><strong>Fournisseur</strong> — Si vous avez un fournisseur préféré, entrez ou recherchez son numéro de fournisseur. C'est optionnel sur la demande mais aide les achats.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4h</span>
+          <span class="substep-text"><span data-lang="en"><strong>GL Account</strong>, <strong>Project Code</strong>, <strong>Cost Center / Department</strong>, <strong>Delivery Address</strong>, and <strong>Tax Code</strong> — Fill these according to your organization's chart of accounts and purchasing policy.</span><span data-lang="fr"><strong>Compte GL</strong>, <strong>Code de projet</strong>, <strong>Centre de coûts / Département</strong>, <strong>Adresse de livraison</strong> et <strong>Code de taxe</strong> — Remplissez-les selon le plan comptable et la politique d'achat de votre organisation.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">4i</span>
+          <span class="substep-text"><span data-lang="en">To add more lines, click <strong>Add Line</strong> again and repeat the above for each item/service.</span><span data-lang="fr">Pour ajouter d'autres lignes, cliquez à nouveau sur <strong>Ajouter une ligne</strong> et répétez les étapes ci-dessus pour chaque article/service.</span></span>
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">💡</span>
+          <span><span data-lang="en">Use the <strong>Item Lookup</strong> (magnifying glass icon) to search existing items in the system. This ensures correct item numbers and avoids duplicates.</span><span data-lang="fr">Utilisez la <strong>recherche d'article</strong> (icône de loupe) pour rechercher des articles existants dans le système. Cela garantit les bons numéros d'article et évite les doublons.</span></span>
+        </div>
+
+        <div class="shortcut-box">
+          <div class="shortcut-box-title">⌨️ <span data-lang="en">Quick Search Shortcuts</span><span data-lang="fr">Raccourcis de recherche rapide</span></div>
+          <div class="shortcut-row">
+            <span class="shortcut-label"><span data-lang="en">Vendor</span><span data-lang="fr">Fournisseur</span></span>
+            <span><span data-lang="en">Type first 2 letters + press</span><span data-lang="fr">Tapez les 2 premières lettres + appuyez sur</span> <kbd>F2</kbd></span>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label"><span data-lang="en">Account</span><span data-lang="fr">Compte</span></span>
+            <span><span data-lang="en">Type</span><span data-lang="fr">Tapez</span> <kbd>80</kbd> + <span data-lang="en">press</span><span data-lang="fr">appuyez sur</span> <kbd>F2</kbd></span>
+          </div>
+          <div class="tip-box warning" style="margin-top:10px; margin-bottom:0;">
+            <span class="tip-icon">⚠️</span>
+            <span><span data-lang="en">Always select from the lookup list — do <strong>NOT</strong> type values manually into Vendor or Account fields.</span><span data-lang="fr">Sélectionnez toujours à partir de la liste de recherche — ne tapez <strong>PAS</strong> les valeurs manuellement dans les champs Fournisseur ou Compte.</span></span>
+          </div>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1014,7 +1401,7 @@
   </div>
 
   <!-- ====== SECTION: GL / ACCOUNT ====== -->
-  <div class="section-divider">Account Assignment</div>
+  <div class="section-divider"><span data-lang="en">Account Assignment</span><span data-lang="fr">Affectation de compte</span></div>
 
   <!-- Step 5 (Full only) -->
   <div class="step-card" data-scope="full" data-step="5">
@@ -1022,35 +1409,41 @@
       <div class="step-number">05</div>
       <div class="step-title-wrap">
         <div class="step-title">Assign GL Accounts & Cost Centers</div>
-        <div class="step-subtitle">Map each line to the correct financial account</div>
+        <div class="step-subtitle"><span data-lang="en">Map each line to the correct financial account</span><span data-lang="fr">Associer chaque ligne au bon compte financier</span></div>
       </div>
       <div class="step-tags"><span class="tag tag-full">Full</span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>Full license users are responsible for assigning the correct General Ledger (GL) accounts to each requisition line. This controls which department or project budget is charged.</p>
+        <p data-lang="en">The GL account will default to a pre-set account, but this often needs to be changed. Full license users are responsible for assigning the correct General Ledger (GL) account to each requisition line. This controls which department or project budget is charged.</p><p data-lang="fr">Le compte GL sera par défaut un compte prédéfini, mais celui-ci doit souvent être changé. Les utilisateurs avec licence complète sont responsables d'affecter le bon compte du grand livre (GL) à chaque ligne de demande. Cela contrôle quel département ou budget de projet est débité.</p>
 
         <div class="substep">
           <span class="substep-num">5a</span>
-          <span class="substep-text">On each line item, locate the <strong>Account</strong> or <strong>GL Account</strong> field. Click the lookup to browse the Chart of Accounts.</span>
+          <span class="substep-text"><span data-lang="en">On each line item, the <strong>GL Account</strong> field will default to a pre-set account. This default typically needs to be changed to match the correct expense category for your purchase. Click the lookup to browse the Chart of Accounts.</span><span data-lang="fr">Sur chaque ligne d'article, le champ <strong>Compte GL</strong> affichera un compte par défaut. Ce compte par défaut doit généralement être modifié pour correspondre à la bonne catégorie de dépenses pour votre achat. Cliquez sur la recherche pour parcourir le plan comptable.</span></span>
         </div>
+
+        <div class="screenshot-block">
+          <img src="images/05-gl-account.png" alt="GL Account Lookup" loading="lazy" style="width:100%; display:block;">
+          <div class="screenshot-caption"><span data-lang="en">GL Account Lookup — showing the Account field with F2 lookup results</span><span data-lang="fr">Recherche de compte GL — affichant le champ Compte avec les résultats de recherche F2</span></div>
+        </div>
+
         <div class="substep">
           <span class="substep-num">5b</span>
-          <span class="substep-text">Select the appropriate <strong>expense account</strong> for the purchase (e.g., 5000-100 for Office Supplies, 5200-200 for Maintenance Parts).</span>
+          <span class="substep-text"><span data-lang="en">Select the appropriate <strong>expense account</strong> for the purchase (e.g., 5000-100 for Office Supplies, 5200-200 for Maintenance Parts).</span><span data-lang="fr">Sélectionnez le <strong>compte de dépenses</strong> approprié pour l'achat (ex. : 5000-100 pour Fournitures de bureau, 5200-200 pour Pièces de maintenance).</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">5c</span>
-          <span class="substep-text">If your organization uses <strong>account dimensions</strong> (department, project, cost center), fill in each segment as required.</span>
+          <span class="substep-text"><span data-lang="en">If your organization uses <strong>account dimensions</strong> (department, project, cost center), fill in each segment as required.</span><span data-lang="fr">Si votre organisation utilise des <strong>dimensions de compte</strong> (département, projet, centre de coûts), remplissez chaque segment selon les besoins.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">5d</span>
-          <span class="substep-text">If splitting the cost across multiple accounts, use the <strong>Account Distribution</strong> feature (if available in your configuration) to allocate percentages.</span>
+          <span class="substep-text"><span data-lang="en">If splitting the cost across multiple accounts, use the <strong>Account Distribution</strong> feature (if available in your configuration) to allocate percentages.</span><span data-lang="fr">Si vous répartissez le coût sur plusieurs comptes, utilisez la fonctionnalité <strong>Répartition de compte</strong> (si disponible dans votre configuration) pour allouer les pourcentages.</span></span>
         </div>
 
         <div class="tip-box warning">
           <span class="tip-icon">⚠️</span>
-          <span>Incorrect GL coding is one of the top reasons requisitions are rejected during approval. Double-check with your finance team if unsure which account to use.</span>
+          <span><span data-lang="en">Incorrect GL coding is one of the top reasons requisitions are rejected during approval. Double-check with your finance team if unsure which account to use.</span><span data-lang="fr">Un codage GL incorrect est l'une des principales raisons de rejet des demandes lors de l'approbation. Vérifiez avec votre équipe financière si vous n'êtes pas sûr du compte à utiliser.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1066,28 +1459,28 @@
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">05</div>
       <div class="step-title-wrap">
-        <div class="step-title">Verify Auto-Assigned Accounts (ESS)</div>
-        <div class="step-subtitle">Confirm default account coding</div>
+        <div class="step-title"><span data-lang="en">Verify Auto-Assigned Accounts (ESS)</span><span data-lang="fr">Vérifier les comptes assignés automatiquement (ESS)</span></div>
+        <div class="step-subtitle"><span data-lang="en">Confirm default account coding</span><span data-lang="fr">Confirmer le codage de compte par défaut</span></div>
       </div>
       <div class="step-tags"><span class="tag tag-ess">ESS</span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>For ESS users, the GL account and cost center are typically auto-assigned based on your department or employee profile setup in the system.</p>
+        <p data-lang="en">For ESS users, the GL account and cost center are typically auto-assigned based on your department or employee profile setup in the system.</p><p data-lang="fr">Pour les utilisateurs ESS, le compte GL et le centre de coûts sont généralement assignés automatiquement en fonction de votre département ou de la configuration de votre profil employé dans le système.</p>
 
         <div class="substep">
           <span class="substep-num">5a</span>
-          <span class="substep-text">Review the <strong>Account</strong> field if it is visible. It should display your department's default expense account.</span>
+          <span class="substep-text"><span data-lang="en">Review the <strong>Account</strong> field if it is visible. It will default to a pre-set account which may not be correct for your purchase. Note any needed changes in the Comments field.</span><span data-lang="fr">Vérifiez le champ <strong>Compte</strong> s'il est visible. Il affichera un compte par défaut qui peut ne pas être correct pour votre achat. Notez les modifications nécessaires dans le champ Commentaires.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">5b</span>
-          <span class="substep-text">If the account looks incorrect or you're purchasing for a different department/project, note this in the <strong>Notes/Comments</strong> field so the approver can reassign it.</span>
+          <span class="substep-text"><span data-lang="en">If the account looks incorrect or you're purchasing for a different department/project, note this in the <strong>Notes/Comments</strong> field so the approver can reassign it.</span><span data-lang="fr">Si le compte semble incorrect ou si vous achetez pour un autre département/projet, notez-le dans le champ <strong>Notes/Commentaires</strong> afin que l'approbateur puisse le réaffecter.</span></span>
         </div>
 
         <div class="tip-box success">
           <span class="tip-icon">✅</span>
-          <span>In most ESS configurations, your approver or purchasing agent will finalize GL coding during the approval step. Focus on providing accurate descriptions and costs.</span>
+          <span><span data-lang="en">In most ESS configurations, your approver or purchasing agent will finalize GL coding during the approval step. Focus on providing accurate descriptions and costs.</span><span data-lang="fr">Dans la plupart des configurations ESS, votre approbateur ou agent d'achat finalisera le codage GL lors de l'étape d'approbation. Concentrez-vous sur la fourniture de descriptions et de coûts précis.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1099,44 +1492,40 @@
   </div>
 
   <!-- ====== SECTION: NOTES & ATTACHMENTS ====== -->
-  <div class="section-divider">Notes &amp; Attachments</div>
+  <div class="section-divider"><span data-lang="en">Notes &amp; Attachments</span><span data-lang="fr">Notes et pièces jointes</span></div>
 
   <!-- Step 6 -->
   <div class="step-card" data-scope="both" data-step="6">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">06</div>
       <div class="step-title-wrap">
-        <div class="step-title">Add Notes, Comments &amp; Attachments</div>
-        <div class="step-subtitle">Provide supporting justification and documents</div>
+        <div class="step-title"><span data-lang="en">Add Notes, Comments &amp; Attachments</span><span data-lang="fr">Ajouter notes, commentaires et pièces jointes</span></div>
+        <div class="step-subtitle"><span data-lang="en">Provide supporting justification and documents</span><span data-lang="fr">Fournir la justification et les documents à l'appui</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <div class="step-tags"><span class="tag tag-both"><span data-lang="en">Both</span><span data-lang="fr">Les deux</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>Supporting documentation speeds up the approval process and gives the buyer context for sourcing decisions.</p>
+        <p data-lang="en">Supporting documentation speeds up the approval process and gives the buyer context for sourcing decisions.</p><p data-lang="fr">La documentation à l'appui accélère le processus d'approbation et donne au acheteur le contexte pour les décisions d'approvisionnement.</p>
 
         <div class="substep">
           <span class="substep-num">6a</span>
-          <span class="substep-text"><strong>Notes / Comments</strong> — Enter the business justification for the purchase. Example: "Replacement parts for CNC Machine #4 — current bearings are worn and causing quality defects per NCR-2026-0412."</span>
+          <span class="substep-text"><span data-lang="en"><strong>Notes / Comments</strong> <em>(Full License only)</em> (Full License only) — Enter the business justification for the purchase. Example: "Replacement parts for CNC Machine #4 — current bearings are worn and causing quality defects per NCR-2026-0412." ESS users do not have access to the notes field.</span><span data-lang="fr"><strong>Notes / Commentaires</strong> <em>(Licence complète seulement)</em> (Licence complète uniquement) — Entrez la justification commerciale de l'achat. Exemple : « Pièces de remplacement pour machine CNC #4 — les roulements actuels sont usés et causent des défauts de qualité selon NCR-2026-0412. » Les utilisateurs ESS n'ont pas accès au champ notes.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">6b</span>
-          <span class="substep-text"><strong>Attachments</strong> — Click the attachment/paperclip icon to upload supporting files such as vendor quotes, spec sheets, or photos.</span>
-        </div>
-        <div class="substep">
-          <span class="substep-num">6c</span>
-          <span class="substep-text">Ensure files are in common formats (PDF, XLSX, DOCX, JPG/PNG) and are under your system's file size limit.</span>
+          <span class="substep-text"><span data-lang="en">Ensure files are in supported formats: PDF, DOC/DOCX, PPT/PPTX, <strong>XLS/XLSX</strong>, JPG/JPEG, PNG, and TXT are all supported by Infor Document Management. Check your system's file size limit with your administrator.</span><span data-lang="fr">Assurez-vous que les fichiers sont dans des formats pris en charge : PDF, DOC/DOCX, PPT/PPTX, <strong>XLS/XLSX</strong>, JPG/JPEG, PNG et TXT sont tous pris en charge par la gestion documentaire Infor. Vérifiez la limite de taille de fichier de votre système avec votre administrateur.</span></span>
         </div>
 
         <div class="diff-callout diff-full" style="margin-top:12px;">
-          <span class="diff-label">Full License</span>
-          Full license users can also use the <strong>Internal Notes</strong> vs. <strong>External Notes</strong> distinction — internal notes stay within your organization, while external notes may carry forward to the Purchase Order sent to the vendor.
+          <span class="diff-label"><span data-lang="en">Full License</span><span data-lang="fr">Licence complète</span></span>
+          <span data-lang="en">Full license users can also use the <strong>Internal Notes</strong> vs. <strong>External Notes</strong> distinction — internal notes stay within your organization, while external notes may carry forward to the Purchase Order sent to the vendor.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également utiliser la distinction <strong>Notes internes</strong> vs <strong>Notes externes</strong> — les notes internes restent au sein de votre organisation, tandis que les notes externes peuvent être transférées au bon de commande envoyé au fournisseur.</span>
         </div>
 
         <div class="tip-box info">
-          <span class="tip-icon">📎</span>
-          <span>Always attach vendor quotes for purchases above your organization's threshold (e.g., $500+). This significantly speeds up approval.</span>
+          <span class="tip-icon">📧</span>
+          <span><span data-lang="en">For purchases above your organization's threshold (e.g., $500+), email vendor quotes directly to your approver. Reference the quote in your requisition notes to speed up the approval process.</span><span data-lang="fr">Pour les achats au-dessus du seuil de votre organisation (ex. : 500 $+), envoyez les devis fournisseurs par courriel directement à votre approbateur. Référencez le devis dans les notes de votre demande pour accélérer le processus d'approbation.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1148,43 +1537,43 @@
   </div>
 
   <!-- ====== SECTION: REVIEW & SUBMIT ====== -->
-  <div class="section-divider">Review &amp; Submit</div>
+  <div class="section-divider"><span data-lang="en">Review &amp; Submit</span><span data-lang="fr">Révision et soumission</span></div>
 
   <!-- Step 7 -->
   <div class="step-card" data-scope="both" data-step="7">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">07</div>
       <div class="step-title-wrap">
-        <div class="step-title">Review the Requisition</div>
-        <div class="step-subtitle">Verify all details before submitting</div>
+        <div class="step-title"><span data-lang="en">Review the Requisition</span><span data-lang="fr">Réviser la demande</span></div>
+        <div class="step-subtitle"><span data-lang="en">Verify all details before submitting</span><span data-lang="fr">Vérifier tous les détails avant de soumettre</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <div class="step-tags"><span class="tag tag-both"><span data-lang="en">Both</span><span data-lang="fr">Les deux</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>Before submitting, perform a final review of every field and line item. Errors at this stage cause delays in the approval and purchasing process.</p>
+        <p data-lang="en">Before submitting, perform a final review of every field and line item. Errors at this stage cause delays in the approval and purchasing process.</p><p data-lang="fr">Avant de soumettre, effectuez une révision finale de chaque champ et ligne d'article. Les erreurs à ce stade causent des retards dans le processus d'approbation et d'achat.</p>
 
         <div class="substep">
           <span class="substep-num">7a</span>
-          <span class="substep-text"><strong>Header Check</strong> — Confirm requester name, needed-by date, and any header-level fields are correct.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Header Check</strong> — Confirm requester name, due date, and any header-level fields are correct.</span><span data-lang="fr"><strong>Vérification de l'en-tête</strong> — Confirmez que le nom du demandeur, la date requise et tous les champs de niveau en-tête sont corrects.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">7b</span>
-          <span class="substep-text"><strong>Line Items Check</strong> — Review each line for: correct item/description, accurate quantity, correct U/M, reasonable unit cost, and (if applicable) correct GL account.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Line Items Check</strong> — Review each line for: correct item/description, accurate quantity, correct U/M, reasonable unit cost, and (if applicable) correct GL account.</span><span data-lang="fr"><strong>Vérification des lignes</strong> — Vérifiez chaque ligne pour : article/description correct, quantité exacte, U/M correcte, coût unitaire raisonnable, et (le cas échéant) compte GL correct.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">7c</span>
-          <span class="substep-text"><strong>Total Amount</strong> — Review the requisition total. Ensure it aligns with your budget expectations and approval thresholds.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Total Amount</strong> — Review the requisition total. Ensure it aligns with your budget expectations and approval thresholds.</span><span data-lang="fr"><strong>Montant total</strong> — Vérifiez le total de la demande. Assurez-vous qu'il correspond à vos attentes budgétaires et aux seuils d'approbation.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">7d</span>
-          <span class="substep-text"><strong>Attachments</strong> — Confirm all supporting documents have been uploaded and are legible.</span>
+          <span class="substep-text"><span data-lang="en"><strong>Attachments</strong> — Confirm all supporting documents have been uploaded and are legible.</span><span data-lang="fr"><strong>Pièces jointes</strong> — Confirmez que tous les documents à l'appui ont été téléversés et sont lisibles.</span></span>
         </div>
 
         <div class="tip-box warning">
           <span class="tip-icon">⚠️</span>
-          <span>Common rejection reasons: missing description detail, wrong GL account, no vendor quote attached for high-value items, unrealistic needed-by dates.</span>
+          <span><span data-lang="en">Common rejection reasons: missing description detail, wrong GL account, no vendor quote attached for high-value items, unrealistic due dates.</span><span data-lang="fr">Raisons courantes de rejet : détail de description manquant, mauvais compte GL, pas de devis fournisseur joint pour les articles de grande valeur, dates requises irréalistes.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1200,39 +1589,55 @@
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">08</div>
       <div class="step-title-wrap">
-        <div class="step-title">Save &amp; Submit for Approval</div>
-        <div class="step-subtitle">Finalize the requisition and route it to your approver</div>
+        <div class="step-title"><span data-lang="en">Save &amp; Submit for Approval</span><span data-lang="fr">Enregistrer et soumettre pour approbation</span></div>
+        <div class="step-subtitle"><span data-lang="en">Finalize the requisition and route it to your approver</span><span data-lang="fr">Finaliser la demande et l'acheminer à votre approbateur</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <div class="step-tags"><span class="tag tag-both"><span data-lang="en">Both</span><span data-lang="fr">Les deux</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
         <div class="substep">
           <span class="substep-num">8a</span>
-          <span class="substep-text">Click <strong>Save</strong> (Ctrl+S) to save the requisition. This creates the record without submitting it — you can still make edits.</span>
+          <span class="substep-text"><span data-lang="en">Click <strong>Save</strong> (Ctrl+S) to save the requisition. This creates the record without submitting it — you can still make edits.</span><span data-lang="fr">Cliquez sur <strong>Enregistrer</strong> (Ctrl+S) pour sauvegarder la demande. Cela crée l'enregistrement sans le soumettre — vous pouvez encore apporter des modifications.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">8b</span>
-          <span class="substep-text">Once satisfied, click <strong>Submit</strong> (or change the status to <strong>"Submitted"</strong> depending on your configuration). This routes the requisition into the approval workflow.</span>
+          <span class="substep-text"><span data-lang="en">Once satisfied, click <strong>Submit</strong> (or change the status to <strong>"Submitted"</strong> depending on your configuration). This routes the requisition into the approval workflow.</span><span data-lang="fr">Une fois satisfait, cliquez sur <strong>Soumettre</strong> (ou changez le statut à <strong>« Soumis »</strong> selon votre configuration). Cela achemine la demande dans le flux d'approbation.</span></span>
         </div>
+
+        <div class="screenshot-block">
+          <img src="images/06-submit-status.png" alt="Submit Action" loading="lazy" style="width:100%; display:block;">
+          <div class="screenshot-caption"><span data-lang="en">Submit Action — showing the Submit button / status change to "Submitted"</span><span data-lang="fr">Action de soumission — affichant le bouton Soumettre / changement de statut à « Soumis »</span></div>
+        </div>
+
+        <div class="tip-box warning">
+          <span class="tip-icon">💰</span>
+          <span><span data-lang="en"><strong>Currency:</strong> The requisition defaults to <strong>CAD (Canadian Dollars)</strong> and cannot be changed to another currency on the form. If your purchase requires a different currency (e.g., USD), contact your approver directly to arrange the currency conversion before the PO is created.</span><span data-lang="fr"><strong>Devise :</strong> La demande est par défaut en <strong>CAD (dollars canadiens)</strong> et ne peut pas être changée vers une autre devise sur le formulaire. Si votre achat nécessite une devise différente (ex. : USD), contactez votre approbateur directement pour organiser la conversion de devise avant la création du BC.</span></span>
+        </div>
+
         <div class="substep">
           <span class="substep-num">8c</span>
-          <span class="substep-text">Note the <strong>Requisition Number</strong> for your records. You'll use this to track the status of your request.</span>
+          <span class="substep-text"><span data-lang="en">Note the <strong>Requisition Number</strong> for your records. You'll use this to track the status of your request.</span><span data-lang="fr">Notez le <strong>numéro de demande</strong> pour vos dossiers. Vous l'utiliserez pour suivre le statut de votre demande.</span></span>
         </div>
 
         <div class="diff-callout diff-ess">
-          <span class="diff-label">ESS License</span>
-          In the ESS portal, the Submit button is typically a prominent action at the top of the form. After submission, the requisition is routed to your manager or designated approver based on the workflow rules configured in the system.
+          <span class="diff-label"><span data-lang="en">ESS License</span><span data-lang="fr">Licence ESS</span></span>
+          <span data-lang="en">In the ESS portal, the Submit button is typically a prominent action at the top of the form. After submission, the requisition is routed to your manager or designated approver based on the workflow rules configured in the system.</span><span data-lang="fr">Dans le portail ESS, le bouton Soumettre est généralement une action bien visible en haut du formulaire. Après la soumission, la demande est acheminée vers votre gestionnaire ou approbateur désigné selon les règles de flux de travail configurées dans le système.</span>
         </div>
         <div class="diff-callout diff-full" style="margin-top:8px;">
           <span class="diff-label">Full License</span>
-          Full license users may have a <strong>Workflow</strong> toolbar button that shows the approval chain. You can also see which approver the requisition will be routed to before submitting. Some configurations allow selecting from multiple approval paths.
+          <span data-lang="en">Full license users may have a <strong>Workflow</strong> toolbar button that shows the approval chain. You can also see which approver the requisition will be routed to before submitting. Some configurations allow selecting from multiple approval paths.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent avoir un bouton <strong>Flux de travail</strong> dans la barre d'outils qui montre la chaîne d'approbation. Vous pouvez également voir à quel approbateur la demande sera acheminée avant de la soumettre. Certaines configurations permettent de sélectionner parmi plusieurs chemins d'approbation.</span>
+        </div>
+
+        <div class="tip-box warning">
+          <span class="tip-icon">💲</span>
+          <span><span data-lang="en">The currency defaults to <strong>CAD</strong> and cannot be changed on the requisition form. If you need to submit a requisition in a different currency, contact your approver or the Purchasing team before submitting.</span><span data-lang="fr">La devise est par défaut <strong>CAD</strong> et ne peut pas être changée sur le formulaire de demande. Si vous devez soumettre une demande dans une autre devise, contactez votre approbateur ou l'équipe des achats avant de soumettre.</span></span>
         </div>
 
         <div class="tip-box success">
           <span class="tip-icon">🚀</span>
-          <span>After submission, your approver will receive a notification (email or SyteLine alert). You'll be notified when it's approved or if changes are requested.</span>
+          <span><span data-lang="en">After submission, your approver will receive a notification (email or SyteLine alert). You'll be notified when it's approved or if changes are requested.</span><span data-lang="fr">Après la soumission, votre approbateur recevra une notification (courriel ou alerte SyteLine). Vous serez informé lorsque la demande sera approuvée ou si des modifications sont demandées.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1244,55 +1649,55 @@
   </div>
 
   <!-- ====== SECTION: POST-SUBMISSION ====== -->
-  <div class="section-divider">Post-Submission</div>
+  <div class="section-divider"><span data-lang="en">Post-Submission</span><span data-lang="fr">Après la soumission</span></div>
 
   <!-- Step 9 -->
   <div class="step-card" data-scope="both" data-step="9">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">09</div>
       <div class="step-title-wrap">
-        <div class="step-title">Track Requisition Status</div>
-        <div class="step-subtitle">Monitor approval progress and respond to requests</div>
+        <div class="step-title"><span data-lang="en">Track Requisition Status</span><span data-lang="fr">Suivre le statut de la demande</span></div>
+        <div class="step-subtitle"><span data-lang="en">Monitor approval progress and respond to requests</span><span data-lang="fr">Surveiller la progression de l'approbation et répondre aux demandes</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both">Both</span></div>
+      <div class="step-tags"><span class="tag tag-both"><span data-lang="en">Both</span><span data-lang="fr">Les deux</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p>After submission, monitor your requisition through the approval and purchasing lifecycle.</p>
+        <p data-lang="en">After submission, monitor your requisition through the approval and purchasing lifecycle.</p><p data-lang="fr">Après la soumission, surveillez votre demande tout au long du cycle de vie d'approbation et d'achat.</p>
 
         <table class="field-table">
-          <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+          <thead><tr><th><span data-lang="en">Status</span><span data-lang="fr">Statut</span></th><th><span data-lang="en">Meaning</span><span data-lang="fr">Signification</span></th></tr></thead>
           <tbody>
-            <tr><td>Open / Draft</td><td>Saved but not yet submitted — still editable</td></tr>
-            <tr><td>Submitted</td><td>Sent to the approval workflow — awaiting approver action</td></tr>
-            <tr><td>Approved</td><td>Approved by all required approvers — ready for purchasing to convert to a PO</td></tr>
-            <tr><td>Rejected</td><td>Returned by an approver — review comments and resubmit with corrections</td></tr>
-            <tr><td>Converted / Closed</td><td>A Purchase Order has been generated from this requisition</td></tr>
+            <tr><td><span data-lang="en">Open / Draft</span><span data-lang="fr">Ouvert / Brouillon</span></td><td><span data-lang="en">Saved but not yet submitted — still editable</span><span data-lang="fr">Enregistré mais pas encore soumis — encore modifiable</span></td></tr>
+            <tr><td><span data-lang="en">Submitted</span><span data-lang="fr">Soumis</span></td><td><span data-lang="en">Sent to the approval workflow — awaiting approver action</span><span data-lang="fr">Envoyé au flux d'approbation — en attente d'action de l'approbateur</span></td></tr>
+            <tr><td><span data-lang="en">Approved</span><span data-lang="fr">Approuvé</span></td><td><span data-lang="en">Approved by all required approvers — ready for purchasing to convert to a PO</span><span data-lang="fr">Approuvé par tous les approbateurs requis — prêt à être converti en BC par les achats</span></td></tr>
+            <tr><td><span data-lang="en">Rejected</span><span data-lang="fr">Rejeté</span></td><td><span data-lang="en">Returned by an approver — review comments and resubmit with corrections</span><span data-lang="fr">Retourné par un approbateur — examiner les commentaires et resoumettre avec corrections</span></td></tr>
+            <tr><td><span data-lang="en">Converted / Closed</span><span data-lang="fr">Converti / Fermé</span></td><td><span data-lang="en">A Purchase Order has been generated from this requisition</span><span data-lang="fr">Un bon de commande a été généré à partir de cette demande</span></td></tr>
           </tbody>
         </table>
 
         <div class="substep">
           <span class="substep-num">9a</span>
-          <span class="substep-text">Return to the Purchase Requisition list to check the <strong>Status</strong> column for your requisition number.</span>
+          <span class="substep-text"><span data-lang="en">Return to the Purchase Requisition list to check the <strong>Status</strong> column for your requisition number.</span><span data-lang="fr">Retournez à la liste des demandes d'achat pour vérifier la colonne <strong>Statut</strong> de votre numéro de demande.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">9b</span>
-          <span class="substep-text">If <strong>Rejected</strong>: open the requisition, review the approver's comments, make the requested changes, and re-submit.</span>
+          <span class="substep-text"><span data-lang="en">If <strong>Rejected</strong>: open the requisition, review the approver's comments, make the requested changes, and re-submit.</span><span data-lang="fr">Si <strong>Rejeté</strong> : ouvrez la demande, examinez les commentaires de l'approbateur, apportez les modifications demandées et resoumettez.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">9c</span>
-          <span class="substep-text">If <strong>Approved</strong>: purchasing will create a PO. You can track the PO number once generated — it will typically appear linked on the requisition record.</span>
+          <span class="substep-text"><span data-lang="en">If <strong>Approved</strong>: purchasing will create a PO. You can track the PO number once generated — it will typically appear linked on the requisition record.</span><span data-lang="fr">Si <strong>Approuvé</strong> : les achats créeront un BC. Vous pouvez suivre le numéro de BC une fois généré — il apparaîtra généralement lié sur l'enregistrement de la demande.</span></span>
         </div>
 
         <div class="diff-callout diff-full" style="margin-top:12px;">
-          <span class="diff-label">Full License — Advanced Tracking</span>
-          Full license users can also use the <strong>Requisition-to-PO Cross Reference</strong> form, and run <strong>Purchasing reports</strong> to track all requisitions by status, requester, date range, and more.
+          <span class="diff-label"><span data-lang="en">Full License — Advanced Tracking</span><span data-lang="fr">Licence complète — Suivi avancé</span></span>
+          <span data-lang="en">Full license users can also use the <strong>Requisition-to-PO Cross Reference</strong> form, and run <strong>Purchasing reports</strong> to track all requisitions by status, requester, date range, and more.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également utiliser le formulaire <strong>Référence croisée Demande-BC</strong> et exécuter des <strong>rapports d'achat</strong> pour suivre toutes les demandes par statut, demandeur, plage de dates, et plus encore.</span>
         </div>
 
         <div class="tip-box info">
           <span class="tip-icon">🔔</span>
-          <span>Set up Infor notifications (email or Ming.le alerts) for requisition status changes so you're automatically informed when your requisition is approved, rejected, or converted to a PO.</span>
+          <span><span data-lang="en">Set up Infor notifications (email or Ming.le alerts) for requisition status changes so you're automatically informed when your requisition is approved, rejected, or converted to a PO.</span><span data-lang="fr">Configurez les notifications Infor (courriel ou alertes Ming.le) pour les changements de statut de demande afin d'être automatiquement informé lorsque votre demande est approuvée, rejetée ou convertie en BC.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1307,6 +1712,45 @@
 
 <script>
   const STORAGE_KEY = 'syteline-pr-sop-progress';
+
+
+  let currentTheme = 'dark';
+
+  function toggleTheme() {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme();
+    saveProgress();
+  }
+
+  function applyTheme() {
+    if (currentTheme === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
+    }
+  }
+
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    const container = document.getElementById('app');
+    if (lang === 'fr') {
+      container.classList.add('lang-fr');
+      container.classList.remove('lang-en');
+    } else {
+      container.classList.remove('lang-fr');
+      container.classList.add('lang-en');
+    }
+    document.getElementById('btn-en').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
+    document.getElementById('btn-fr').className = 'lang-btn' + (lang === 'fr' ? ' active' : '');
+    // Update page title
+    document.title = lang === 'fr' 
+      ? 'SOP — Demandes d\'achat dans Infor SyteLine'
+      : 'SOP — Purchase Requisitions in Infor SyteLine';
+    saveProgress();
+  }
+
   let currentFilter = 'ess';
   let completedSteps = new Set();
 
@@ -1315,6 +1759,8 @@
     try {
       const data = {
         filter: currentFilter,
+        lang: currentLang,
+        theme: currentTheme,
         completed: Array.from(completedSteps)
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -1327,12 +1773,14 @@
       if (!raw) return;
       const data = JSON.parse(raw);
       if (data.filter) currentFilter = data.filter;
+      if (data.lang) currentLang = data.lang;
+      if (data.theme) currentTheme = data.theme;
       if (Array.isArray(data.completed)) completedSteps = new Set(data.completed);
     } catch (e) { /* corrupted or unavailable — start fresh */ }
   }
 
   function resetProgress() {
-    if (!confirm('Reset all progress? This cannot be undone.')) return;
+    if (!confirm(currentLang === 'fr' ? 'Réinitialiser toute la progression? Cette action est irréversible.' : 'Reset all progress? This cannot be undone.')) return;
     completedSteps.clear();
     try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
     document.querySelectorAll('.step-card.completed').forEach(card => {
@@ -1341,7 +1789,7 @@
       if (btn) {
         btn.classList.remove('done');
         btn.querySelector('svg').style.display = 'none';
-        btn.childNodes[btn.childNodes.length - 1].textContent = ' Mark as Complete';
+        btn.childNodes[btn.childNodes.length - 1].textContent = currentLang === 'fr' ? ' Marquer comme terminé' : ' Mark as Complete';
       }
     });
     updateProgress();
@@ -1393,13 +1841,13 @@
       completedSteps.delete(key);
       card.classList.remove('completed');
       btn.classList.remove('done');
-      btn.childNodes[btn.childNodes.length - 1].textContent = ' Mark as Complete';
+      btn.childNodes[btn.childNodes.length - 1].textContent = currentLang === 'fr' ? ' Marquer comme terminé' : ' Mark as Complete';
       svg.style.display = 'none';
     } else {
       completedSteps.add(key);
       card.classList.add('completed');
       btn.classList.add('done');
-      btn.childNodes[btn.childNodes.length - 1].textContent = ' Completed';
+      btn.childNodes[btn.childNodes.length - 1].textContent = currentLang === 'fr' ? ' Terminé' : ' Completed';
       svg.style.display = 'block';
     }
     updateProgress();
@@ -1430,7 +1878,7 @@
       if (btn) {
         btn.classList.add('done');
         btn.querySelector('svg').style.display = 'block';
-        btn.childNodes[btn.childNodes.length - 1].textContent = ' Completed';
+        btn.childNodes[btn.childNodes.length - 1].textContent = currentLang === 'fr' ? ' Terminé' : ' Completed';
       }
     });
   }
@@ -1438,6 +1886,8 @@
   // ── Init ──
   loadProgress();
   restoreUI();
+  applyTheme();
+  setLang(currentLang);
   setFilter(currentFilter);
 </script>
 </body>
