@@ -632,6 +632,13 @@
     text-transform: uppercase;
     color: var(--text-muted);
   }
+
+  .section-divider svg {
+    color: var(--accent);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
   .section-divider::before,
   .section-divider::after {
     content: '';
@@ -879,6 +886,188 @@
     background: var(--warn-glow);
   }
 
+
+  /* STEP FLOW CONNECTORS */
+  .step-card {
+    position: relative;
+  }
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: -16px;
+    left: 37px;
+    width: 2px;
+    height: 16px;
+    background: var(--border);
+  }
+  .step-card:first-of-type::before,
+  .step-card.hidden-by-filter + .step-card:not(.hidden-by-filter)::before {
+    display: none;
+  }
+  .section-divider + .step-card::before {
+    display: none;
+  }
+  .step-card.completed::before {
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scaleCheck {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(140,197,63,0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(140,197,63,0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Apply animations */
+  .step-card {
+    animation: fadeSlideUp 0.4s ease both;
+  }
+  .step-card:nth-child(1) { animation-delay: 0.05s; }
+  .step-card:nth-child(2) { animation-delay: 0.1s; }
+  .step-card:nth-child(3) { animation-delay: 0.15s; }
+  .step-card:nth-child(4) { animation-delay: 0.2s; }
+  .step-card:nth-child(5) { animation-delay: 0.25s; }
+
+  .section-divider {
+    animation: slideInRight 0.5s ease both;
+  }
+
+  .header {
+    animation: fadeIn 0.6s ease both;
+  }
+
+  /* Smooth hover lift on step cards */
+  .step-card {
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .step-card:hover {
+    transform: translateY(-2px);
+  }
+  .step-card.open {
+    transform: translateY(0);
+  }
+
+  /* Checkmark animation on complete */
+  .step-card.completed .step-number {
+    animation: scaleCheck 0.35s ease;
+  }
+
+  /* Pulse on newly completed */
+  .step-card.just-completed {
+    animation: pulseGlow 0.6s ease;
+  }
+
+  /* Smooth expand for step body */
+  .step-body {
+    transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+    opacity: 0;
+  }
+  .step-card.open .step-body {
+    opacity: 1;
+  }
+
+  /* Substep stagger animation when card opens */
+  .step-card.open .substep {
+    animation: fadeSlideUp 0.3s ease both;
+  }
+  .step-card.open .substep:nth-child(1) { animation-delay: 0.05s; }
+  .step-card.open .substep:nth-child(2) { animation-delay: 0.1s; }
+  .step-card.open .substep:nth-child(3) { animation-delay: 0.15s; }
+  .step-card.open .substep:nth-child(4) { animation-delay: 0.2s; }
+  .step-card.open .substep:nth-child(5) { animation-delay: 0.25s; }
+  .step-card.open .substep:nth-child(6) { animation-delay: 0.3s; }
+  .step-card.open .substep:nth-child(7) { animation-delay: 0.35s; }
+  .step-card.open .substep:nth-child(8) { animation-delay: 0.4s; }
+
+  /* ESS limits panel card hover */
+  .limit-card {
+    transition: all 0.25s ease;
+  }
+  .limit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  /* Theme toggle spin animation */
+  .theme-toggle-btn svg {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .theme-toggle-btn:active svg {
+    transform: rotate(180deg);
+  }
+
+  /* Progress bar shimmer */
+  .progress-fill {
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Tag hover glow */
+  .tag {
+    transition: all 0.2s ease;
+  }
+  .tag:hover {
+    transform: scale(1.05);
+  }
+
+  /* Complete button animation */
+  .complete-btn {
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .complete-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Language & license button transitions */
+  .lang-btn, .license-btn {
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+
+
+
+  /* Tooltip arrow pulse on highlighted fields */
+
+
   /* Hidden by filter */
   .step-card.hidden-by-filter {
     display: none;
@@ -912,6 +1101,9 @@
 
 <div class="container" id="app">
   <div class="header">
+    <div style="display:flex;justify-content:center;margin-bottom:16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 419.05 143.54" style="height:48px; width:auto;"><defs><style>.nn-g { fill: #8abf56; } .nn-t { fill: var(--text); }</style></defs><g><path class="nn-g" d="m0,31.51h11.4v5.07c4.75-4.75,9.18-6.65,15.52-6.65,5.22,0,10.45,1.58,13.77,4.28,4.44,3.64,6.02,8.07,6.02,16.47v56.53h-12.03v-56.21c0-7.44-3.96-11.4-11.24-11.4s-11.24,3.96-11.24,11.4v56.21H0V31.51Z"/><path class="nn-g" d="m75.21,72.52c-5.07,1.74-6.81,3.96-6.81,9.82v7.44c0,6.65,3.64,9.82,10.93,9.82,8.23,0,12.03-3.64,12.03-11.56v-20.43l-16.15,4.91Zm-17.89-16.31v-5.86c0-13.14,8.23-20.27,23.59-20.27s22.64,6.49,22.64,20.11v50.67c0,1.9.16,3.96.47,6.33h-11.88v-4.91c-3.32,4.28-8.39,6.33-15.68,6.33-13.14,0-20.27-6.17-20.27-17.73v-9.5c0-9.34,3.48-13.62,13.14-16.62l22.01-6.97v-7.28c0-7.13-3.48-10.61-10.61-10.61-7.76,0-11.88,3.48-11.88,10.14v6.17h-11.56Z"/><path class="nn-g" d="m114.8,31.51h11.4v5.07c4.75-4.75,9.18-6.65,15.52-6.65,5.23,0,10.45,1.58,13.78,4.28,4.43,3.64,6.02,8.07,6.02,16.47v56.53h-12.04v-56.21c0-7.44-3.96-11.4-11.24-11.4s-11.24,3.96-11.24,11.4v56.21h-12.19V31.51Z"/><path class="nn-g" d="m197.24,98.81c7.91,0,12.03-3.8,12.03-11.4v-36.1c0-7.44-4.12-11.4-12.03-11.4s-12.04,3.96-12.04,11.4v36.1c0,7.6,4.12,11.4,12.04,11.4m0,10.13c-16.31,0-24.23-6.97-24.23-21.53v-36.1c0-14.41,7.92-21.53,24.23-21.53s24.22,7.12,24.22,21.53v36.1c0,14.57-7.92,21.53-24.22,21.53"/><path class="nn-t" d="m244.76,95.64c3.01,3.64,8.71,5.7,15.36,5.7s12.51-2.06,15.52-5.7c2.22-2.53,3.01-5.86,3.01-11.72V24.86c0-5.86-.79-9.19-3.01-11.72-3-3.48-8.71-5.7-15.52-5.7s-12.35,2.22-15.36,5.7c-2.22,2.53-3.01,5.86-3.01,11.72v59.06c0,5.86.79,9.18,3.01,11.72m15.36,13.14c-18.52,0-27.08-7.91-27.08-24.86V24.86C233.04,7.92,241.6,0,260.12,0s27.24,7.92,27.24,24.86v59.06c0,16.94-8.71,24.86-27.24,24.86"/><path class="nn-t" d="m298.92,31.19h7.44v4.91c5.07-4.91,9.81-6.81,16.31-6.81,13.46,0,21.38,7.6,21.38,20.9v57h-7.92v-57c0-9.03-5.23-13.93-14.73-13.93s-14.57,4.91-14.57,13.93v57h-7.92V31.19Z"/><path class="nn-t" d="m394.87,62.86v-12.67c0-9.03-5.54-13.93-15.68-13.93s-15.67,4.91-15.67,13.93v12.67h31.35Zm7.92,25.33c0,13.78-8.08,20.9-23.59,20.9s-23.6-7.12-23.6-20.9v-38c0-13.78,8.08-20.9,23.6-20.9s23.59,7.12,23.59,20.9v20.11h-39.27v17.89c0,9.03,5.54,13.94,15.67,13.94s15.68-4.91,15.68-13.94v-9.03h7.92v9.03Z"/><path class="nn-g" d="m243.38,138.4c0,2.85-2.29,5.15-5.13,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.13,2.31,5.13,5.14"/><path class="nn-g" d="m265.34,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/><path class="nn-g" d="m287.3,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/><path class="nn-t" d="m309.25,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/><path class="nn-t" d="m331.21,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/><path class="nn-t" d="m353.17,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/><path class="nn-t" d="m375.13,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/><path class="nn-t" d="m397.09,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/><path class="nn-t" d="m419.05,138.4c0,2.85-2.3,5.15-5.14,5.15s-5.14-2.3-5.14-5.15,2.3-5.14,5.14-5.14,5.14,2.31,5.14,5.14"/></g></svg>
+    </div>
     <div class="badge"><span data-lang="en">Standard Operating Procedure</span><span data-lang="fr">Procédure opérationnelle standard</span></div>
     <h1><span data-lang="en">Purchase Requisitions in Infor SyteLine</span><span data-lang="fr">Demandes d'achat dans Infor SyteLine</span></h1>
     <p><span data-lang="en">A step-by-step interactive guide for creating purchase requisitions — covering both Employee Self Service (ESS) and Full License workflows.</span><span data-lang="fr">Un guide interactif étape par étape pour créer des demandes d'achat — couvrant les flux de travail Libre-service employé (ESS) et Licence complète.</span></p>
@@ -930,13 +1122,13 @@
   <div class="license-toggle-wrap">
     <div class="license-toggle">
       <button class="license-btn active-ess" id="btn-ess" onclick="setFilter('ess')">
-        <span class="dot ess-dot"></span>ESS License
+        <span class="dot ess-dot"></span><span data-lang="en">ESS License</span><span data-lang="fr">Licence ESS</span>
       </button>
       <button class="license-btn" id="btn-full" onclick="setFilter('full')">
-        <span class="dot full-dot"></span>Full License
+        <span class="dot full-dot"></span><span data-lang="en">Full License</span><span data-lang="fr">Licence complète</span>
       </button>
       <button class="license-btn" id="btn-all" onclick="setFilter('all')">
-        All Steps
+        <span data-lang="en">All Steps</span><span data-lang="fr">Toutes les étapes</span>
       </button>
     </div>
   </div>
@@ -1031,7 +1223,7 @@
         <div class="ess-limits-footer">
           <div class="tip-box info" style="margin-top:0;">
             <span class="tip-icon">💡</span>
-            <span><span data-lang="en">If you need capabilities beyond the ESS license, speak with your System Administrator about a license upgrade. Your organization's Infor license agreement determines how many Full License seats are available.</span><span data-lang="fr">Si vous avez besoin de fonctionnalités au-delà de la licence ESS, parlez à votre administrateur système d'une mise à niveau de licence. Le contrat de licence Infor de votre organisation détermine le nombre de sièges de licence complète disponibles.</span></span>
+            <span><span data-lang="en">If you need capabilities beyond the ESS license, speak with your System Administrator about a license upgrade. Your organization's Infor license agreement determines how many Full License seats are available.</span><span data-lang="fr">Si vous avez besoin de fonctionnalités au-delà de la licence ESS, parlez à votre administrateur système d'une mise à niveau de licence. Le contrat de licence Infor de Nano One détermine le nombre de sièges de licence complète disponibles.</span></span>
           </div>
         </div>
 
@@ -1040,7 +1232,7 @@
   </div>
 
   <!-- ====== SECTION: BEFORE YOU BEGIN ====== -->
-  <div class="section-divider"><span data-lang="en">Before You Begin</span><span data-lang="fr">Avant de commencer</span></div>
+  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg> <span data-lang="en">Before You Begin</span><span data-lang="fr">Avant de commencer</span></div>
 
   <!-- Step 1 -->
   <div class="step-card" data-scope="both" data-step="1">
@@ -1078,14 +1270,14 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ====== SECTION: NAVIGATION ====== -->
-  <div class="section-divider"><span data-lang="en">Navigate to the Requisition Form</span><span data-lang="fr">Naviguer vers le formulaire de demande</span></div>
+  <div class="section-divider" id="divider-navigation"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg> <span data-lang="en">Navigate to the Requisition Form</span><span data-lang="fr">Naviguer vers le formulaire de demande</span></div>
 
   <!-- Step 2 (ESS) -->
   <div class="step-card" data-scope="ess" data-step="2">
@@ -1119,10 +1311,7 @@
           <span class="substep-text"><span data-lang="en">The <strong>Purchase Requisition List</strong> will open, showing any existing requisitions you've previously created. Click <strong>New</strong> to create a new requisition.</span><span data-lang="fr">La <strong>liste des demandes d'achat</strong> s'ouvrira, affichant les demandes que vous avez précédemment créées. Cliquez sur <strong>Nouveau</strong> pour créer une nouvelle demande.</span></span>
         </div>
 
-        <div class="screenshot-block">
-          <img src="images/01-ess-portal.png" alt="ESS Portal" loading="lazy" style="width:100%; display:block;">
-          <div class="screenshot-caption"><span data-lang="en">ESS Portal — Purchase Requisition list view with "New" button highlighted</span><span data-lang="fr">Portail ESS — Vue de la liste des demandes d'achat avec le bouton « Nouveau » mis en évidence</span></div>
-        </div>
+                
 
         <div class="tip-box info">
           <span class="tip-icon">💡</span>
@@ -1131,68 +1320,14 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Step 2 (Full) -->
-  <div class="step-card" data-scope="full" data-step="2">
-    <div class="step-header" onclick="toggleStep(this)">
-      <div class="step-number">02</div>
-      <div class="step-title-wrap">
-        <div class="step-title"><span data-lang="en">Open the Purchase Requisition Form</span><span data-lang="fr">Ouvrir le formulaire de demande d'achat</span></div>
-        <div class="step-subtitle"><span data-lang="en">Navigate through the SyteLine client menus</span><span data-lang="fr">Naviguer via les menus du client SyteLine</span></div>
-      </div>
-      <div class="step-tags"><span class="tag tag-full">Full</span></div>
-      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-content">
-        <div class="nav-path full-path">Menu &gt; Purchasing &gt; Purchase Requisitions &gt; Purchase Requisitions</div>
-
-        <div class="substep">
-          <span class="substep-num">2a</span>
-          <span class="substep-text"><span data-lang="en">Click the <strong>9-dot grid menu</strong> (⋮⋮⋮) in the top-left corner of the screen to open the application launcher, then select <strong>SyteLine</strong>.</span><span data-lang="fr">Cliquez sur le <strong>menu grille à 9 points</strong> (⋮⋮⋮) dans le coin supérieur gauche de l'écran pour ouvrir le lanceur d'applications, puis sélectionnez <strong>SyteLine</strong>.</span></span>
-        </div>
-        <div class="substep">
-          <span class="substep-num">2b</span>
-          <span class="substep-text"><span data-lang="en">From the SyteLine main menu or navigation pane, expand the <strong>Purchasing</strong> module.</span><span data-lang="fr">Depuis le menu principal SyteLine ou le volet de navigation, développez le module <strong>Achats</strong>.</span></span>
-        </div>
-        <div class="substep">
-          <span class="substep-num">2c</span>
-          <span class="substep-text"><span data-lang="en">Under Purchasing, expand <strong>Purchase Requisitions</strong> and click <strong>Purchase Requisitions</strong> to open the form.</span><span data-lang="fr">Sous Achats, développez <strong>Demandes d'achat</strong> et cliquez sur <strong>Demandes d'achat</strong> pour ouvrir le formulaire.</span></span>
-        </div>
-        <div class="substep">
-          <span class="substep-num">2d</span>
-          <span class="substep-text"><span data-lang="en">Alternatively, use the <strong>Quick Search</strong> bar (Ctrl+Q) and type <strong>"Purchase Requisitions"</strong> to jump directly to the form.</span><span data-lang="fr">Alternativement, utilisez la barre de <strong>recherche rapide</strong> (Ctrl+Q) et tapez <strong>« Demandes d'achat »</strong> pour accéder directement au formulaire.</span></span>
-        </div>
-        <div class="substep">
-          <span class="substep-num">2e</span>
-          <span class="substep-text"><span data-lang="en">The form will open in <strong>Browse</strong> mode showing existing records. Click the <strong>New</strong> button (or press Ctrl+N) on the toolbar to create a new requisition.</span><span data-lang="fr">Le formulaire s'ouvrira en mode <strong>Navigation</strong> affichant les enregistrements existants. Cliquez sur le bouton <strong>Nouveau</strong> (ou appuyez sur Ctrl+N) dans la barre d'outils pour créer une nouvelle demande.</span></span>
-        </div>
-
-        <div class="screenshot-block">
-          <img src="images/02-full-client-form.png" alt="Full Client" loading="lazy" style="width:100%; display:block;">
-          <div class="screenshot-caption"><span data-lang="en">Full Client — Purchase Requisitions form in Browse mode with "New" button on toolbar</span><span data-lang="fr">Client complet — Formulaire de demandes d'achat en mode Navigation avec le bouton « Nouveau » dans la barre d'outils</span></div>
-        </div>
-
-        <div class="tip-box info">
-          <span class="tip-icon">⌨️</span>
-          <span><span data-lang="en">Full license users can also add the Purchase Requisitions form to their <strong>Favorites</strong> for quicker access in the future.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également ajouter le formulaire de demandes d'achat à leurs <strong>Favoris</strong> pour un accès plus rapide à l'avenir.</span></span>
-        </div>
-
-        <button class="complete-btn" onclick="toggleComplete(this)">
-          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ====== SECTION: HEADER ====== -->
-  <div class="section-divider"><span data-lang="en">Complete the Requisition Header</span><span data-lang="fr">Remplir l'en-tête de la demande</span></div>
+  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> <span data-lang="en">Complete the Requisition Header</span><span data-lang="fr">Remplir l'en-tête de la demande</span></div>
 
   <!-- Step 3 -->
   <div class="step-card" data-scope="both" data-step="3">
@@ -1211,7 +1346,7 @@
 
         <div class="substep">
           <span class="substep-num">3a</span>
-          <span class="substep-text"><span data-lang="en"><strong>Requisition Number</strong> — typically auto-generated by the system. Do not modify unless your organization uses manual numbering.</span><span data-lang="fr"><strong>Numéro de demande</strong> — généralement généré automatiquement par le système. Ne modifiez pas sauf si votre organisation utilise la numérotation manuelle.</span></span>
+          <span class="substep-text"><span data-lang="en"><strong>Requisition Number</strong> — typically auto-generated by the system. Do not modify unless Nano One uses manual numbering.</span><span data-lang="fr"><strong>Numéro de demande</strong> — généralement généré automatiquement par le système. Ne modifiez pas sauf si Nano One utilise la numérotation manuelle.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">3b</span>
@@ -1227,10 +1362,7 @@
         </div>
 
 
-        <div class="screenshot-block">
-          <img src="images/03-header-fields.png" alt="Requisition Header" loading="lazy" style="width:100%; display:block;">
-          <div class="screenshot-caption"><span data-lang="en">Requisition Header — showing Requisition Number, Requester, Date, Due Date, and Status fields</span><span data-lang="fr">En-tête de la demande — affichant les champs Numéro de demande, Demandeur, Date, Date requise et Statut</span></div>
-        </div>
+                
 
         <div class="tip-box info">
           <span class="tip-icon">🔶</span>
@@ -1244,21 +1376,21 @@
 
         <div class="diff-callout diff-full" style="margin-top:12px;">
           <span class="diff-label"><span data-lang="en">Full License — Additional Fields</span><span data-lang="fr">Licence complète — Champs supplémentaires</span></span>
-          <span data-lang="en">Full license users may also see: <strong>Warehouse</strong> (default receiving warehouse), <strong>Ship To</strong> address, <strong>Buyer Code</strong>, and <strong>Priority</strong>. Fill these if applicable to your organization's workflow.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également voir : <strong>Entrepôt</strong> (entrepôt de réception par défaut), adresse <strong>Livrer à</strong>, <strong>Code acheteur</strong> et <strong>Priorité</strong>. Remplissez-les si applicable au flux de travail de votre organisation.</span>
+          <span data-lang="en">Full license users may also see: <strong>Warehouse</strong> (default receiving warehouse), <strong>Ship To</strong> address, <strong>Buyer Code</strong>, and <strong>Priority</strong>. Fill these if applicable to Nano One's workflow.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également voir : <strong>Entrepôt</strong> (entrepôt de réception par défaut), adresse <strong>Livrer à</strong>, <strong>Code acheteur</strong> et <strong>Priorité</strong>. Remplissez-les si applicable au flux de travail de Nano One.</span>
         </div>
 
 
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ====== SECTION: LINE ITEMS ====== -->
-  <div class="section-divider"><span data-lang="en">Add Line Items</span><span data-lang="fr">Ajouter des lignes d'articles</span></div>
+  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> <span data-lang="en">Add Line Items</span><span data-lang="fr">Ajouter des lignes d'articles</span></div>
 
   <!-- Step 4 (ESS) -->
   <div class="step-card" data-scope="ess" data-step="4">
@@ -1307,7 +1439,7 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
@@ -1321,7 +1453,7 @@
         <div class="step-title"><span data-lang="en">Add Requisition Line Items</span><span data-lang="fr">Ajouter les lignes de la demande</span></div>
         <div class="step-subtitle"><span data-lang="en">Enter item details, quantities, and costs</span><span data-lang="fr">Saisir les détails des articles, quantités et coûts</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-full">Full</span></div>
+      <div class="step-tags"><span class="tag tag-full"><span data-lang="en">Full</span><span data-lang="fr">Complète</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
@@ -1333,10 +1465,7 @@
           <span class="substep-text"><span data-lang="en">Click <strong>Add Line</strong> or navigate to the <strong>Lines</strong> tab/grid at the bottom of the form.</span><span data-lang="fr">Cliquez sur <strong>Ajouter une ligne</strong> ou naviguez vers l'onglet/grille <strong>Lignes</strong> en bas du formulaire.</span></span>
         </div>
 
-        <div class="screenshot-block">
-          <img src="images/04-line-items.png" alt="Line Items Grid" loading="lazy" style="width:100%; display:block;">
-          <div class="screenshot-caption"><span data-lang="en">Line Items Grid — showing Item, Description, Qty, U/M, Unit Cost, and Vendor columns</span><span data-lang="fr">Grille des lignes d'articles — affichant les colonnes Article, Description, Qté, U/M, Coût unitaire et Fournisseur</span></div>
-        </div>
+                
 
         <div class="substep">
           <span class="substep-num">4b</span>
@@ -1364,7 +1493,7 @@
         </div>
         <div class="substep">
           <span class="substep-num">4h</span>
-          <span class="substep-text"><span data-lang="en"><strong>GL Account</strong>, <strong>Project Code</strong>, <strong>Cost Center / Department</strong>, <strong>Delivery Address</strong>, and <strong>Tax Code</strong> — Fill these according to your organization's chart of accounts and purchasing policy.</span><span data-lang="fr"><strong>Compte GL</strong>, <strong>Code de projet</strong>, <strong>Centre de coûts / Département</strong>, <strong>Adresse de livraison</strong> et <strong>Code de taxe</strong> — Remplissez-les selon le plan comptable et la politique d'achat de votre organisation.</span></span>
+          <span class="substep-text"><span data-lang="en"><strong>GL Account</strong>, <strong>Project Code</strong>, <strong>Cost Center / Department</strong>, <strong>Delivery Address</strong>, and <strong>Tax Code</strong> — Fill these according to Nano One's chart of accounts and purchasing policy.</span><span data-lang="fr"><strong>Compte GL</strong>, <strong>Code de projet</strong>, <strong>Centre de coûts / Département</strong>, <strong>Adresse de livraison</strong> et <strong>Code de taxe</strong> — Remplissez-les selon le plan comptable et la politique d'achat de Nano One.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">4i</span>
@@ -1394,14 +1523,14 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ====== SECTION: GL / ACCOUNT ====== -->
-  <div class="section-divider"><span data-lang="en">Account Assignment</span><span data-lang="fr">Affectation de compte</span></div>
+  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg> <span data-lang="en">Account Assignment</span><span data-lang="fr">Affectation de compte</span></div>
 
   <!-- Step 5 (Full only) -->
   <div class="step-card" data-scope="full" data-step="5">
@@ -1411,7 +1540,7 @@
         <div class="step-title">Assign GL Accounts & Cost Centers</div>
         <div class="step-subtitle"><span data-lang="en">Map each line to the correct financial account</span><span data-lang="fr">Associer chaque ligne au bon compte financier</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-full">Full</span></div>
+      <div class="step-tags"><span class="tag tag-full"><span data-lang="en">Full</span><span data-lang="fr">Complète</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
@@ -1423,10 +1552,7 @@
           <span class="substep-text"><span data-lang="en">On each line item, the <strong>GL Account</strong> field will default to a pre-set account. This default typically needs to be changed to match the correct expense category for your purchase. Click the lookup to browse the Chart of Accounts.</span><span data-lang="fr">Sur chaque ligne d'article, le champ <strong>Compte GL</strong> affichera un compte par défaut. Ce compte par défaut doit généralement être modifié pour correspondre à la bonne catégorie de dépenses pour votre achat. Cliquez sur la recherche pour parcourir le plan comptable.</span></span>
         </div>
 
-        <div class="screenshot-block">
-          <img src="images/05-gl-account.png" alt="GL Account Lookup" loading="lazy" style="width:100%; display:block;">
-          <div class="screenshot-caption"><span data-lang="en">GL Account Lookup — showing the Account field with F2 lookup results</span><span data-lang="fr">Recherche de compte GL — affichant le champ Compte avec les résultats de recherche F2</span></div>
-        </div>
+                
 
         <div class="substep">
           <span class="substep-num">5b</span>
@@ -1434,7 +1560,7 @@
         </div>
         <div class="substep">
           <span class="substep-num">5c</span>
-          <span class="substep-text"><span data-lang="en">If your organization uses <strong>account dimensions</strong> (department, project, cost center), fill in each segment as required.</span><span data-lang="fr">Si votre organisation utilise des <strong>dimensions de compte</strong> (département, projet, centre de coûts), remplissez chaque segment selon les besoins.</span></span>
+          <span class="substep-text"><span data-lang="en">If Nano One uses <strong>account dimensions</strong> (department, project, cost center), fill in each segment as required.</span><span data-lang="fr">Si Nano One utilise des <strong>dimensions de compte</strong> (département, projet, centre de coûts), remplissez chaque segment selon les besoins.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">5d</span>
@@ -1448,7 +1574,7 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
@@ -1485,14 +1611,14 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ====== SECTION: NOTES & ATTACHMENTS ====== -->
-  <div class="section-divider"><span data-lang="en">Notes &amp; Attachments</span><span data-lang="fr">Notes et pièces jointes</span></div>
+  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg> <span data-lang="en">Notes &amp; Attachments</span><span data-lang="fr">Notes et pièces jointes</span></div>
 
   <!-- Step 6 -->
   <div class="step-card" data-scope="both" data-step="6">
@@ -1520,24 +1646,24 @@
 
         <div class="diff-callout diff-full" style="margin-top:12px;">
           <span class="diff-label"><span data-lang="en">Full License</span><span data-lang="fr">Licence complète</span></span>
-          <span data-lang="en">Full license users can also use the <strong>Internal Notes</strong> vs. <strong>External Notes</strong> distinction — internal notes stay within your organization, while external notes may carry forward to the Purchase Order sent to the vendor.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également utiliser la distinction <strong>Notes internes</strong> vs <strong>Notes externes</strong> — les notes internes restent au sein de votre organisation, tandis que les notes externes peuvent être transférées au bon de commande envoyé au fournisseur.</span>
+          <span data-lang="en">Full license users can also use the <strong>Internal Notes</strong> vs. <strong>External Notes</strong> distinction — internal notes stay within Nano One, while external notes may carry forward to the Purchase Order sent to the vendor.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également utiliser la distinction <strong>Notes internes</strong> vs <strong>Notes externes</strong> — les notes internes restent au sein de Nano One, tandis que les notes externes peuvent être transférées au bon de commande envoyé au fournisseur.</span>
         </div>
 
         <div class="tip-box info">
           <span class="tip-icon">📧</span>
-          <span><span data-lang="en">For purchases above your organization's threshold (e.g., $500+), email vendor quotes directly to your approver. Reference the quote in your requisition notes to speed up the approval process.</span><span data-lang="fr">Pour les achats au-dessus du seuil de votre organisation (ex. : 500 $+), envoyez les devis fournisseurs par courriel directement à votre approbateur. Référencez le devis dans les notes de votre demande pour accélérer le processus d'approbation.</span></span>
+          <span><span data-lang="en">For purchases above Nano One's threshold (e.g., $500+), email vendor quotes directly to your approver. Reference the quote in your requisition notes to speed up the approval process.</span><span data-lang="fr">Pour les achats au-dessus du seuil de Nano One (ex. : 500 $+), envoyez les devis fournisseurs par courriel directement à votre approbateur. Référencez le devis dans les notes de votre demande pour accélérer le processus d'approbation.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ====== SECTION: REVIEW & SUBMIT ====== -->
-  <div class="section-divider"><span data-lang="en">Review &amp; Submit</span><span data-lang="fr">Révision et soumission</span></div>
+  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <span data-lang="en">Review &amp; Submit</span><span data-lang="fr">Révision et soumission</span></div>
 
   <!-- Step 7 -->
   <div class="step-card" data-scope="both" data-step="7">
@@ -1578,7 +1704,7 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
@@ -1606,10 +1732,7 @@
           <span class="substep-text"><span data-lang="en">Once satisfied, click <strong>Submit</strong> (or change the status to <strong>"Submitted"</strong> depending on your configuration). This routes the requisition into the approval workflow.</span><span data-lang="fr">Une fois satisfait, cliquez sur <strong>Soumettre</strong> (ou changez le statut à <strong>« Soumis »</strong> selon votre configuration). Cela achemine la demande dans le flux d'approbation.</span></span>
         </div>
 
-        <div class="screenshot-block">
-          <img src="images/06-submit-status.png" alt="Submit Action" loading="lazy" style="width:100%; display:block;">
-          <div class="screenshot-caption"><span data-lang="en">Submit Action — showing the Submit button / status change to "Submitted"</span><span data-lang="fr">Action de soumission — affichant le bouton Soumettre / changement de statut à « Soumis »</span></div>
-        </div>
+                
 
         <div class="tip-box warning">
           <span class="tip-icon">💰</span>
@@ -1626,7 +1749,7 @@
           <span data-lang="en">In the ESS portal, the Submit button is typically a prominent action at the top of the form. After submission, the requisition is routed to your manager or designated approver based on the workflow rules configured in the system.</span><span data-lang="fr">Dans le portail ESS, le bouton Soumettre est généralement une action bien visible en haut du formulaire. Après la soumission, la demande est acheminée vers votre gestionnaire ou approbateur désigné selon les règles de flux de travail configurées dans le système.</span>
         </div>
         <div class="diff-callout diff-full" style="margin-top:8px;">
-          <span class="diff-label">Full License</span>
+          <span class="diff-label"><span data-lang="en">Full License</span><span data-lang="fr">Licence complète</span></span>
           <span data-lang="en">Full license users may have a <strong>Workflow</strong> toolbar button that shows the approval chain. You can also see which approver the requisition will be routed to before submitting. Some configurations allow selecting from multiple approval paths.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent avoir un bouton <strong>Flux de travail</strong> dans la barre d'outils qui montre la chaîne d'approbation. Vous pouvez également voir à quel approbateur la demande sera acheminée avant de la soumettre. Certaines configurations permettent de sélectionner parmi plusieurs chemins d'approbation.</span>
         </div>
 
@@ -1642,14 +1765,14 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ====== SECTION: POST-SUBMISSION ====== -->
-  <div class="section-divider"><span data-lang="en">Post-Submission</span><span data-lang="fr">Après la soumission</span></div>
+  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> <span data-lang="en">Post-Submission</span><span data-lang="fr">Après la soumission</span></div>
 
   <!-- Step 9 -->
   <div class="step-card" data-scope="both" data-step="9">
@@ -1702,11 +1825,126 @@
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
-          Mark as Complete
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
         </button>
       </div>
     </div>
   </div>
+
+  <!-- ====== SECTION: APPROVAL PROCESS ====== -->
+  <div class="section-divider" id="divider-approval"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v-2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg> <span data-lang="en">Approval Process</span><span data-lang="fr">Processus d'approbation</span></div>
+
+  <!-- Step 10 (Full only) -->
+  <div class="step-card" data-scope="full" data-step="10">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">10</div>
+      <div class="step-title-wrap">
+        <div class="step-title"><span data-lang="en">Review &amp; Approve Requisitions</span><span data-lang="fr">Réviser et approuver les demandes</span></div>
+        <div class="step-subtitle"><span data-lang="en">For approvers/managers — reviewing submitted requisitions</span><span data-lang="fr">Pour les approbateurs/gestionnaires — révision des demandes soumises</span></div>
+      </div>
+      <div class="step-tags"><span class="tag tag-full"><span data-lang="en">Full</span><span data-lang="fr">Complète</span></span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p data-lang="en">When a requisition is submitted, it enters the approval workflow. Approvers receive a notification (email or SyteLine alert) and must review, approve, or reject the request. This step requires a Full License with the appropriate approval workflow role.</p><p data-lang="fr">Lorsqu'une demande est soumise, elle entre dans le flux d'approbation. Les approbateurs reçoivent une notification (courriel ou alerte SyteLine) et doivent réviser, approuver ou rejeter la demande. Cette étape nécessite une licence complète avec le rôle de flux d'approbation approprié.</p>
+
+        <div class="substep">
+          <span class="substep-num">10a</span>
+          <span class="substep-text"><span data-lang="en">Open the <strong>Purchase Requisitions</strong> form. Submitted requisitions awaiting your approval will appear with a status of <strong>"Submitted"</strong> or <strong>"Pending Approval"</strong>.</span><span data-lang="fr">Ouvrez le formulaire <strong>Demandes d'achat</strong>. Les demandes soumises en attente de votre approbation apparaîtront avec un statut <strong>« Soumis »</strong> ou <strong>« En attente d'approbation »</strong>.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">10b</span>
+          <span class="substep-text"><span data-lang="en"><strong>Review the header</strong> — verify the requester, due date, and total amount are reasonable for the request.</span><span data-lang="fr"><strong>Révisez l'en-tête</strong> — vérifiez que le demandeur, la date d'échéance et le montant total sont raisonnables pour la demande.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">10c</span>
+          <span class="substep-text"><span data-lang="en"><strong>Review each line item</strong> — confirm the description is clear, the quantity is justified, the unit cost is reasonable, and the GL account is correct. Adjust the GL account if the requester's default is wrong.</span><span data-lang="fr"><strong>Révisez chaque ligne d'article</strong> — confirmez que la description est claire, la quantité est justifiée, le coût unitaire est raisonnable et le compte GL est correct. Ajustez le compte GL si le compte par défaut du demandeur est incorrect.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">10d</span>
+          <span class="substep-text"><span data-lang="en"><strong>Check for supporting documents</strong> — if the purchase exceeds Nano One's threshold, ensure the requester has emailed vendor quotes or supporting documentation.</span><span data-lang="fr"><strong>Vérifiez les documents à l'appui</strong> — si l'achat dépasse le seuil de Nano One, assurez-vous que le demandeur a envoyé des devis fournisseurs ou de la documentation à l'appui par courriel.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">10e</span>
+          <span class="substep-text"><span data-lang="en"><strong>Approve or Reject</strong> — Click <strong>Approve</strong> to advance the requisition to the next approval level or to Purchasing. Click <strong>Reject</strong> to return it to the requester with comments explaining what needs to change.</span><span data-lang="fr"><strong>Approuver ou Rejeter</strong> — Cliquez sur <strong>Approuver</strong> pour avancer la demande au prochain niveau d'approbation ou aux Achats. Cliquez sur <strong>Rejeter</strong> pour la retourner au demandeur avec des commentaires expliquant ce qui doit être modifié.</span></span>
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">🔗</span>
+          <span><span data-lang="en">Approval routing is configured by your System Administrator. Requisitions may require multiple levels of approval depending on the total amount (e.g., under $1,000 = manager only; $1,000–$10,000 = manager + director).</span><span data-lang="fr">Le routage d'approbation est configuré par votre administrateur système. Les demandes peuvent nécessiter plusieurs niveaux d'approbation selon le montant total (ex. : moins de 1 000 $ = gestionnaire seulement ; 1 000 $–10 000 $ = gestionnaire + directeur).</span></span>
+        </div>
+
+        <div class="tip-box warning">
+          <span class="tip-icon">⚠️</span>
+          <span><span data-lang="en">When rejecting, always provide clear comments — the requester cannot see what's wrong unless you tell them. Common rejection reasons: incorrect GL account, missing vendor quote, vague description, or exceeding budget.</span><span data-lang="fr">Lorsque vous rejetez, fournissez toujours des commentaires clairs — le demandeur ne peut pas voir ce qui ne va pas à moins que vous ne le lui disiez. Raisons courantes de rejet : compte GL incorrect, devis fournisseur manquant, description vague ou dépassement du budget.</span></span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SECTION: PO CONVERSION ====== -->
+  <div class="section-divider" id="divider-po-conversion"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg> <span data-lang="en">Convert to Purchase Order</span><span data-lang="fr">Convertir en bon de commande</span></div>
+
+  <!-- Step 11 (Full only) -->
+  <div class="step-card" data-scope="full" data-step="11">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">11</div>
+      <div class="step-title-wrap">
+        <div class="step-title"><span data-lang="en">Convert Approved Requisition to Purchase Order</span><span data-lang="fr">Convertir la demande approuvée en bon de commande</span></div>
+        <div class="step-subtitle"><span data-lang="en">For Buyers/Purchasing — generating the PO from an approved PR</span><span data-lang="fr">Pour les acheteurs/service des achats — générer le BC à partir d'une DA approuvée</span></div>
+      </div>
+      <div class="step-tags"><span class="tag tag-full"><span data-lang="en">Full</span><span data-lang="fr">Complète</span></span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p data-lang="en">Once a requisition is fully approved, the Purchasing team converts it into a Purchase Order (PO). This step is performed by Buyers using a Full License and is not available to ESS users.</p><p data-lang="fr">Une fois qu'une demande est entièrement approuvée, l'équipe des achats la convertit en bon de commande (BC). Cette étape est effectuée par les acheteurs avec une licence complète et n'est pas disponible pour les utilisateurs ESS.</p>
+
+        <div class="substep">
+          <span class="substep-num">11a</span>
+          <span class="substep-text"><span data-lang="en">Navigate to <strong>Purchase Orders → Purchase Requisitions</strong> and filter for requisitions with status <strong>"Approved"</strong>.</span><span data-lang="fr">Naviguez vers <strong>Bons de commande → Demandes d'achat</strong> et filtrez les demandes avec le statut <strong>« Approuvé »</strong>.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">11b</span>
+          <span class="substep-text"><span data-lang="en">Open the approved requisition and verify the vendor, pricing, and delivery details. Update if needed based on current vendor quotes or contracts.</span><span data-lang="fr">Ouvrez la demande approuvée et vérifiez le fournisseur, les prix et les détails de livraison. Mettez à jour si nécessaire en fonction des devis ou contrats fournisseurs actuels.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">11c</span>
+          <span class="substep-text"><span data-lang="en">Click <strong>Generate PO</strong> (or use the <strong>Actions → Convert to Purchase Order</strong> menu). SyteLine will create a new Purchase Order linked to this requisition.</span><span data-lang="fr">Cliquez sur <strong>Générer BC</strong> (ou utilisez le menu <strong>Actions → Convertir en bon de commande</strong>). SyteLine créera un nouveau bon de commande lié à cette demande.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">11d</span>
+          <span class="substep-text"><span data-lang="en">Review the generated PO — confirm the vendor, ship-to address, payment terms, and line items transferred correctly. Make any final adjustments.</span><span data-lang="fr">Révisez le BC généré — confirmez que le fournisseur, l'adresse de livraison, les conditions de paiement et les lignes d'articles ont été transférés correctement. Apportez les ajustements finaux.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">11e</span>
+          <span class="substep-text"><span data-lang="en"><strong>Print / Email the PO</strong> to the vendor. Use the <strong>PO Report</strong> to generate the official document for distribution.</span><span data-lang="fr"><strong>Imprimer / Envoyer le BC par courriel</strong> au fournisseur. Utilisez le <strong>rapport BC</strong> pour générer le document officiel pour distribution.</span></span>
+        </div>
+
+        <div class="tip-box success">
+          <span class="tip-icon">✅</span>
+          <span><span data-lang="en">Once converted, the requisition status changes to <strong>"Converted"</strong> or <strong>"Closed"</strong>. The requester can see the linked PO number on their original requisition record.</span><span data-lang="fr">Une fois converti, le statut de la demande passe à <strong>« Converti »</strong> ou <strong>« Fermé »</strong>. Le demandeur peut voir le numéro de BC lié sur son enregistrement de demande original.</span></span>
+        </div>
+
+        <div class="diff-callout diff-ess" style="margin-top:12px;">
+          <span class="diff-label"><span data-lang="en">ESS License — What Happens Next?</span><span data-lang="fr">Licence ESS — Que se passe-t-il ensuite ?</span></span>
+          <span data-lang="en">ESS users do not perform PO conversion — Purchasing handles this step. Once your requisition is converted, you will see the status change to "Converted" on your requisition list. If you need the PO number or order details, contact the Purchasing team.</span><span data-lang="fr">Les utilisateurs ESS ne font pas la conversion en BC — les Achats gèrent cette étape. Une fois votre demande convertie, vous verrez le statut passer à « Converti » dans votre liste de demandes. Si vous avez besoin du numéro de BC ou des détails de la commande, contactez l'équipe des achats.</span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 
@@ -1821,6 +2059,14 @@
       essPanel.style.display = '';
     }
 
+    // Show/hide Full-only section dividers
+    const approvalDiv = document.getElementById('divider-approval');
+    const poDiv = document.getElementById('divider-po-conversion');
+    const navDiv = document.getElementById('divider-navigation');
+    if (approvalDiv) approvalDiv.style.display = (type === 'ess') ? 'none' : '';
+    if (poDiv) poDiv.style.display = (type === 'ess') ? 'none' : '';
+    if (navDiv) navDiv.style.display = (type === 'full') ? 'none' : '';
+
     updateProgress();
     saveProgress();
   }
@@ -1832,6 +2078,21 @@
     if (!wasOpen) card.classList.add('open');
   }
 
+
+  function updateBtnText(btn, completed) {
+    const enSpan = btn.querySelector('[data-lang="en"]');
+    const frSpan = btn.querySelector('[data-lang="fr"]');
+    if (enSpan && frSpan) {
+      enSpan.textContent = completed ? 'Completed' : 'Mark as Complete';
+      frSpan.textContent = completed ? 'Terminé' : 'Marquer comme terminé';
+    } else {
+      // Fallback for any non-bilingual buttons
+      btn.childNodes[btn.childNodes.length - 1].textContent = completed 
+        ? (currentLang === 'fr' ? ' Terminé' : ' Completed')
+        : (currentLang === 'fr' ? ' Marquer comme terminé' : ' Mark as Complete');
+    }
+  }
+
   function toggleComplete(btn) {
     const card = btn.closest('.step-card');
     const key = card.dataset.scope + '-' + card.dataset.step;
@@ -1841,13 +2102,15 @@
       completedSteps.delete(key);
       card.classList.remove('completed');
       btn.classList.remove('done');
-      btn.childNodes[btn.childNodes.length - 1].textContent = currentLang === 'fr' ? ' Marquer comme terminé' : ' Mark as Complete';
+      updateBtnText(btn, false);
       svg.style.display = 'none';
     } else {
       completedSteps.add(key);
       card.classList.add('completed');
+      card.classList.add('just-completed');
+      setTimeout(() => card.classList.remove('just-completed'), 700);
       btn.classList.add('done');
-      btn.childNodes[btn.childNodes.length - 1].textContent = currentLang === 'fr' ? ' Terminé' : ' Completed';
+      updateBtnText(btn, true);
       svg.style.display = 'block';
     }
     updateProgress();
@@ -1878,7 +2141,7 @@
       if (btn) {
         btn.classList.add('done');
         btn.querySelector('svg').style.display = 'block';
-        btn.childNodes[btn.childNodes.length - 1].textContent = currentLang === 'fr' ? ' Terminé' : ' Completed';
+        updateBtnText(btn, true);
       }
     });
   }
