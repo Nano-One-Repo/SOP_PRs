@@ -1448,6 +1448,15 @@
           <span><span data-lang="en">The GL Account and other advanced fields (Vendor, Project Code) may be auto-assigned based on your department or set by your approver during review. Focus on providing accurate item, quantity, and cost information.</span><span data-lang="fr">Le compte GL et les autres champs avancés (Fournisseur, Code de projet) peuvent être assignés automatiquement en fonction de votre département ou définis par votre approbateur lors de la révision. Concentrez-vous sur la fourniture d'informations précises sur l'article, la quantité et le coût.</span></span>
         </div>
 
+        <div class="rule-callout">
+          <div class="rule-callout-title">🚚 <span data-lang="en">Shipping Cost Rule</span><span data-lang="fr">Règle de frais de livraison</span></div>
+          <ol>
+            <li><span data-lang="en">If shipping is required, <strong>add a separate line</strong> for shipping</span><span data-lang="fr">Si la livraison est nécessaire, <strong>ajoutez une ligne distincte</strong> pour la livraison</span></li>
+            <li><span data-lang="en">Set the Description to <strong>"Shipping"</strong></span><span data-lang="fr">Définissez la description à <strong>« Livraison »</strong></span></li>
+            <li><span data-lang="en">Enter the shipping cost as the unit cost</span><span data-lang="fr">Entrez le coût de livraison comme coût unitaire</span></li>
+          </ol>
+        </div>
+
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
           <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
@@ -1532,6 +1541,15 @@
           </div>
         </div>
 
+        <div class="rule-callout">
+          <div class="rule-callout-title">🚚 <span data-lang="en">Shipping Cost Rule</span><span data-lang="fr">Règle de frais de livraison</span></div>
+          <ol>
+            <li><span data-lang="en">If shipping is required, <strong>add a separate line</strong> for shipping</span><span data-lang="fr">Si la livraison est nécessaire, <strong>ajoutez une ligne distincte</strong> pour la livraison</span></li>
+            <li><span data-lang="en">Set the Description to <strong>"Shipping"</strong></span><span data-lang="fr">Définissez la description à <strong>« Livraison »</strong></span></li>
+            <li><span data-lang="en">Enter the shipping cost as the unit cost</span><span data-lang="fr">Entrez le coût de livraison comme coût unitaire</span></li>
+          </ol>
+        </div>
+
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
           <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
@@ -1609,20 +1627,20 @@
     </div>
     <div class="step-body">
       <div class="step-content">
-        <p data-lang="en">For ESS users, the GL account and cost center are typically auto-assigned based on your department or employee profile setup in the system.</p><p data-lang="fr">Pour les utilisateurs ESS, le compte GL et le centre de coûts sont généralement assignés automatiquement en fonction de votre département ou de la configuration de votre profil employé dans le système.</p>
+        <p data-lang="en">ESS users <strong>cannot change the GL account</strong> on the requisition form. The GL account is auto-assigned based on your department or employee profile. If it needs to be different, you must notify your approver.</p><p data-lang="fr">Les utilisateurs ESS <strong>ne peuvent pas modifier le compte GL</strong> sur le formulaire de demande. Le compte GL est assigné automatiquement en fonction de votre département ou profil employé. S'il doit être différent, vous devez en informer votre approbateur.</p>
 
         <div class="substep">
           <span class="substep-num">5a</span>
-          <span class="substep-text"><span data-lang="en">Review the <strong>Account</strong> field if it is visible. It will default to a pre-set account which may not be correct for your purchase. Note any needed changes in the Comments field.</span><span data-lang="fr">Vérifiez le champ <strong>Compte</strong> s'il est visible. Il affichera un compte par défaut qui peut ne pas être correct pour votre achat. Notez les modifications nécessaires dans le champ Commentaires.</span></span>
+          <span class="substep-text"><span data-lang="en">The <strong>Account</strong> field is read-only for ESS users. It will show your department's default expense account. You cannot modify this value.</span><span data-lang="fr">Le champ <strong>Compte</strong> est en lecture seule pour les utilisateurs ESS. Il affichera le compte de dépenses par défaut de votre département. Vous ne pouvez pas modifier cette valeur.</span></span>
         </div>
         <div class="substep">
           <span class="substep-num">5b</span>
-          <span class="substep-text"><span data-lang="en">If the account looks incorrect or you're purchasing for a different department/project, note this in the <strong>Notes/Comments</strong> field so the approver can reassign it.</span><span data-lang="fr">Si le compte semble incorrect ou si vous achetez pour un autre département/projet, notez-le dans le champ <strong>Notes/Commentaires</strong> afin que l'approbateur puisse le réaffecter.</span></span>
+          <span class="substep-text"><span data-lang="en">If the account needs to be different (e.g., purchasing for another department or project), note the correct account in the <strong>Notes/Comments</strong> field so your approver can reassign it before conversion to a PO.</span><span data-lang="fr">Si le compte doit être différent (ex. : achat pour un autre département ou projet), notez le bon compte dans le champ <strong>Notes/Commentaires</strong> afin que votre approbateur puisse le réaffecter avant la conversion en BC.</span></span>
         </div>
 
-        <div class="tip-box success">
-          <span class="tip-icon">✅</span>
-          <span><span data-lang="en">In most ESS configurations, your approver or purchasing agent will finalize GL coding during the approval step. Focus on providing accurate descriptions and costs.</span><span data-lang="fr">Dans la plupart des configurations ESS, votre approbateur ou agent d'achat finalisera le codage GL lors de l'étape d'approbation. Concentrez-vous sur la fourniture de descriptions et de coûts précis.</span></span>
+        <div class="tip-box warning">
+          <span class="tip-icon">🔒</span>
+          <span><span data-lang="en">ESS users cannot modify GL accounts. Your approver or the Purchasing team will set the correct GL coding during the approval process.</span><span data-lang="fr">Les utilisateurs ESS ne peuvent pas modifier les comptes GL. Votre approbateur ou l'équipe des achats définira le bon codage GL lors du processus d'approbation.</span></span>
         </div>
 
         <button class="complete-btn" onclick="toggleComplete(this)">
@@ -1665,10 +1683,11 @@
           <span data-lang="en">Full license users can also use the <strong>Internal Notes</strong> vs. <strong>External Notes</strong> distinction — internal notes stay within Nano One, while external notes may carry forward to the Purchase Order sent to the vendor.</span><span data-lang="fr">Les utilisateurs avec licence complète peuvent également utiliser la distinction <strong>Notes internes</strong> vs <strong>Notes externes</strong> — les notes internes restent au sein de Nano One, tandis que les notes externes peuvent être transférées au bon de commande envoyé au fournisseur.</span>
         </div>
 
-        <div class="tip-box info">
-          <span class="tip-icon">📧</span>
-          <span><span data-lang="en">For purchases above Nano One's threshold (e.g., $500+), email vendor quotes directly to your approver. Reference the quote in your requisition notes to speed up the approval process.</span><span data-lang="fr">Pour les achats au-dessus du seuil de Nano One (ex. : 500 $+), envoyez les devis fournisseurs par courriel directement à votre approbateur. Référencez le devis dans les notes de votre demande pour accélérer le processus d'approbation.</span></span>
+        <div class="tip-box warning">
+          <span class="tip-icon">📎</span>
+          <span><span data-lang="en"><strong>ESS users cannot attach files</strong> directly to the Purchase Requisition form. Instead, email any supporting documents (vendor quotes, spec sheets, photos) directly to your approver and reference them in your requisition notes. For example: "Quote from ABC Corp emailed to approver on April 13."</span><span data-lang="fr"><strong>Les utilisateurs ESS ne peuvent pas joindre de fichiers</strong> directement au formulaire de demande d'achat. Envoyez plutôt tous les documents à l'appui (devis fournisseurs, fiches techniques, photos) directement à votre approbateur par courriel et référencez-les dans vos notes de demande. Par exemple : « Devis d'ABC Corp envoyé par courriel à l'approbateur le 13 avril. »</span></span>
         </div>
+
 
         <button class="complete-btn" onclick="toggleComplete(this)">
           <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
@@ -1750,11 +1769,6 @@
 
                 
 
-        <div class="tip-box warning">
-          <span class="tip-icon">💰</span>
-          <span><span data-lang="en"><strong>Currency:</strong> The requisition defaults to <strong>CAD (Canadian Dollars)</strong> and cannot be changed to another currency on the form. If your purchase requires a different currency (e.g., USD), contact your approver directly to arrange the currency conversion before the PO is created.</span><span data-lang="fr"><strong>Devise :</strong> La demande est par défaut en <strong>CAD (dollars canadiens)</strong> et ne peut pas être changée vers une autre devise sur le formulaire. Si votre achat nécessite une devise différente (ex. : USD), contactez votre approbateur directement pour organiser la conversion de devise avant la création du BC.</span></span>
-        </div>
-
         <div class="substep">
           <span class="substep-num">8c</span>
           <span class="substep-text"><span data-lang="en">Note the <strong>Requisition Number</strong> for your records. You'll use this to track the status of your request.</span><span data-lang="fr">Notez le <strong>numéro de demande</strong> pour vos dossiers. Vous l'utiliserez pour suivre le statut de votre demande.</span></span>
@@ -1788,17 +1802,17 @@
   </div>
 
   <!-- ====== SECTION: POST-SUBMISSION ====== -->
-  <div class="section-divider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> <span data-lang="en">Post-Submission</span><span data-lang="fr">Après la soumission</span></div>
+  <div class="section-divider" id="divider-post-submission"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> <span data-lang="en">Post-Submission</span><span data-lang="fr">Après la soumission</span></div>
 
   <!-- Step 9 -->
-  <div class="step-card" data-scope="both" data-step="9">
+  <div class="step-card" data-scope="full" data-step="9">
     <div class="step-header" onclick="toggleStep(this)">
       <div class="step-number">09</div>
       <div class="step-title-wrap">
         <div class="step-title"><span data-lang="en">Track Requisition Status</span><span data-lang="fr">Suivre le statut de la demande</span></div>
         <div class="step-subtitle"><span data-lang="en">Monitor approval progress and respond to requests</span><span data-lang="fr">Surveiller la progression de l'approbation et répondre aux demandes</span></div>
       </div>
-      <div class="step-tags"><span class="tag tag-both"><span data-lang="en">Both</span><span data-lang="fr">Les deux</span></span></div>
+      <div class="step-tags"><span class="tag tag-full"><span data-lang="en">Full</span><span data-lang="fr">Complète</span></span></div>
       <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="step-body">
@@ -1854,6 +1868,57 @@
 
   <!-- ====== SECTION: APPROVAL PROCESS ====== -->
   <div class="section-divider" id="divider-approval"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v-2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg> <span data-lang="en">Approval Process</span><span data-lang="fr">Processus d'approbation</span></div>
+
+
+  <!-- Step 10 (ESS — Manager Role) -->
+  <div class="step-card" data-scope="ess" data-step="10">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">10</div>
+      <div class="step-title-wrap">
+        <div class="step-title"><span data-lang="en">Approve or Reject Requisitions (ESS Manager)</span><span data-lang="fr">Approuver ou rejeter les demandes (Gestionnaire ESS)</span></div>
+        <div class="step-subtitle"><span data-lang="en">For ESS users with the Manager role — reviewing submitted PRs</span><span data-lang="fr">Pour les utilisateurs ESS avec le rôle Gestionnaire — révision des DA soumises</span></div>
+      </div>
+      <div class="step-tags"><span class="tag tag-ess">ESS</span></div>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-content">
+        <p data-lang="en">If you have the <strong>Employee Self Service Manager</strong> role, you can approve or reject purchase requisitions submitted by other ESS users. You will receive a notification when a requisition is awaiting your approval.</p><p data-lang="fr">Si vous avez le rôle <strong>Gestionnaire Libre-service employé</strong>, vous pouvez approuver ou rejeter les demandes d'achat soumises par d'autres utilisateurs ESS. Vous recevrez une notification lorsqu'une demande est en attente de votre approbation.</p>
+
+        <div class="substep">
+          <span class="substep-num">10a</span>
+          <span class="substep-text"><span data-lang="en">Open the <strong>Purchase Requisitions</strong> list from your ESS portal. Requisitions awaiting your approval will show a status of <strong>"Submitted"</strong> or <strong>"Pending Approval"</strong>.</span><span data-lang="fr">Ouvrez la liste des <strong>Demandes d'achat</strong> depuis votre portail ESS. Les demandes en attente de votre approbation afficheront un statut <strong>« Soumis »</strong> ou <strong>« En attente d'approbation »</strong>.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">10b</span>
+          <span class="substep-text"><span data-lang="en"><strong>Review the requisition</strong> — check the description, quantity, unit cost, and total amount. Verify the request is reasonable and within budget. If the requester has emailed you supporting documents (vendor quotes, spec sheets), review those as well.</span><span data-lang="fr"><strong>Révisez la demande</strong> — vérifiez la description, la quantité, le coût unitaire et le montant total. Vérifiez que la demande est raisonnable et dans le budget. Si le demandeur vous a envoyé des documents à l'appui par courriel (devis fournisseurs, fiches techniques), révisez-les également.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">10c</span>
+          <span class="substep-text"><span data-lang="en"><strong>Approve</strong> — Click the Approve button to advance the requisition to Purchasing for PO conversion.</span><span data-lang="fr"><strong>Approuver</strong> — Cliquez sur le bouton Approuver pour avancer la demande vers les Achats pour la conversion en BC.</span></span>
+        </div>
+        <div class="substep">
+          <span class="substep-num">10d</span>
+          <span class="substep-text"><span data-lang="en"><strong>Reject</strong> — Click Reject and provide clear comments explaining what needs to change. The requester will be notified and can correct and resubmit.</span><span data-lang="fr"><strong>Rejeter</strong> — Cliquez sur Rejeter et fournissez des commentaires clairs expliquant ce qui doit être modifié. Le demandeur sera notifié et pourra corriger et resoumettre.</span></span>
+        </div>
+
+        <div class="tip-box warning">
+          <span class="tip-icon">⚠️</span>
+          <span><span data-lang="en">When rejecting, always provide clear comments — the requester cannot see what's wrong unless you tell them. Common reasons: vague description, unreasonable cost, missing vendor quote, or not within budget.</span><span data-lang="fr">Lorsque vous rejetez, fournissez toujours des commentaires clairs — le demandeur ne peut pas voir ce qui ne va pas à moins que vous ne le lui disiez. Raisons courantes : description vague, coût déraisonnable, devis fournisseur manquant ou hors budget.</span></span>
+        </div>
+
+        <div class="tip-box info">
+          <span class="tip-icon">🔑</span>
+          <span><span data-lang="en">The ability to approve requires the <strong>Employee Self Service Manager</strong> security role. If you don't see the approval option, contact your System Administrator.</span><span data-lang="fr">La capacité d'approuver nécessite le rôle de sécurité <strong>Gestionnaire Libre-service employé</strong>. Si vous ne voyez pas l'option d'approbation, contactez votre administrateur système.</span></span>
+        </div>
+
+        <button class="complete-btn" onclick="toggleComplete(this)">
+          <span class="check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2" style="display:none"><path d="M1.5 5.5L4 8L8.5 2"/></svg></span>
+          <span data-lang="en">Mark as Complete</span><span data-lang="fr">Marquer comme terminé</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Step 10 (Full only) -->
   <div class="step-card" data-scope="full" data-step="10">
@@ -2084,9 +2149,11 @@
     const approvalDiv = document.getElementById('divider-approval');
     const poDiv = document.getElementById('divider-po-conversion');
     const navDiv = document.getElementById('divider-navigation');
-    if (approvalDiv) approvalDiv.style.display = (type === 'ess') ? 'none' : '';
+    // Approval section visible for all modes (ESS users with Manager role can approve)
     if (poDiv) poDiv.style.display = (type === 'ess') ? 'none' : '';
     if (navDiv) navDiv.style.display = (type === 'full') ? 'none' : '';
+    const postSubDiv = document.getElementById('divider-post-submission');
+    if (postSubDiv) postSubDiv.style.display = (type === 'ess') ? 'none' : '';
 
     updateProgress();
     saveProgress();
