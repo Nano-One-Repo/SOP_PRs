@@ -4,42 +4,139 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SOP — Purchase Requisitions in Infor SyteLine</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /* ── NANO ONE BRAND: Dark Mode (default) ── */
   :root {
-    --bg: #0f1117;
-    --surface: #181b24;
-    --surface-2: #1e2230;
-    --surface-3: #252a38;
-    --border: #2a2f40;
-    --border-active: #4a6cf7;
-    --text: #e4e7ef;
-    --text-dim: #8891a8;
-    --text-muted: #5a6380;
-    --accent: #4a6cf7;
-    --accent-glow: rgba(74,108,247,0.15);
-    --accent-2: #38c98d;
-    --accent-2-glow: rgba(56,201,141,0.15);
+    --bg: #1a1e24;
+    --surface: #22272e;
+    --surface-2: #2a3038;
+    --surface-3: #323a44;
+    --border: #3a424e;
+    --border-active: #8cc53f;
+    --text: #e8eaed;
+    --text-dim: #9aa3b0;
+    --text-muted: #69737b;
+    --accent: #8cc53f;
+    --accent-glow: rgba(140,197,63,0.15);
+    --accent-2: #8cc53f;
+    --accent-2-glow: rgba(140,197,63,0.12);
     --ess: #f59e42;
     --ess-glow: rgba(245,158,66,0.12);
-    --full: #4a6cf7;
-    --full-glow: rgba(74,108,247,0.12);
-    --warn: #f87171;
-    --warn-glow: rgba(248,113,113,0.1);
+    --full: #8cc53f;
+    --full-glow: rgba(140,197,63,0.12);
+    --warn: #e85d5d;
+    --warn-glow: rgba(232,93,93,0.1);
     --radius: 10px;
     --radius-lg: 16px;
+    --heading-color: #8cc53f;
   }
+
+  /* ── NANO ONE BRAND: Light Mode ── */
+  .light-mode {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #f0f2f5;
+    --surface-3: #e8eaed;
+    --border: #d4d8de;
+    --border-active: #6ba02e;
+    --text: #292e31;
+    --text-dim: #69737b;
+    --text-muted: #9aa3b0;
+    --accent: #6ba02e;
+    --accent-glow: rgba(140,197,63,0.1);
+    --accent-2: #6ba02e;
+    --accent-2-glow: rgba(140,197,63,0.08);
+    --ess: #d4820e;
+    --ess-glow: rgba(212,130,14,0.08);
+    --full: #6ba02e;
+    --full-glow: rgba(107,160,46,0.08);
+    --warn: #cc3d3d;
+    --warn-glow: rgba(204,61,61,0.06);
+    --heading-color: #4a8520;
+  }
+  .light-mode .header h1 {
+    background: linear-gradient(135deg, var(--text), var(--text-dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .light-mode .step-number {
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+  .light-mode body::before { display: none; }
+  .light-mode .license-btn.active-ess {
+    background: linear-gradient(135deg, var(--ess), #c07510);
+    box-shadow: 0 4px 20px var(--ess-glow);
+  }
+  .light-mode .license-btn.active-full {
+    background: linear-gradient(135deg, #6ba02e, #4a8520);
+    box-shadow: 0 4px 20px var(--full-glow);
+  }
+  .light-mode .nav-path { color: #a67100; }
+  .light-mode .nav-path.full-path { color: #4a8520; }
+  .light-mode .tag-ess { background: rgba(212,130,14,0.1); color: #a67100; border-color: rgba(212,130,14,0.2); }
+  .light-mode .tag-full { background: rgba(107,160,46,0.1); color: #4a8520; border-color: rgba(107,160,46,0.2); }
+  .light-mode .tag-both { background: rgba(107,160,46,0.1); color: #4a8520; border-color: rgba(107,160,46,0.2); }
+  .light-mode .tip-box.info { background: rgba(140,197,63,0.08); border-color: rgba(140,197,63,0.2); color: #3d6e18; }
+  .light-mode .tip-box.warning { background: rgba(204,61,61,0.06); border-color: rgba(204,61,61,0.15); color: #993030; }
+  .light-mode .tip-box.success { background: rgba(140,197,63,0.08); border-color: rgba(140,197,63,0.2); color: #3d6e18; }
+  .light-mode .diff-ess { background: rgba(212,130,14,0.06); border-color: rgba(212,130,14,0.15); color: #8a5a00; }
+  .light-mode .diff-full { background: rgba(107,160,46,0.06); border-color: rgba(107,160,46,0.15); color: #3d6e18; }
+  .light-mode .diff-label { color: inherit; }
+  .light-mode .substep-text strong { color: #4a8520; }
+  .light-mode .field-table td:first-child { color: #4a8520; }
+  .light-mode .ess-limits-panel { border-color: rgba(212,130,14,0.3); }
+  .light-mode .ess-limits-title { color: #a67100; }
+  .light-mode .limit-card-title { color: #a67100; }
+  .light-mode .shortcut-box-title { color: #4a8520; }
+  .light-mode .rule-callout { background: rgba(140,197,63,0.06); border-color: rgba(140,197,63,0.25); }
+  .light-mode .rule-callout-title { color: #4a8520; }
+  .light-mode kbd { background: #e8eaed; border-color: #d4d8de; color: #292e31; }
+  .light-mode .progress-fill { background: linear-gradient(90deg, #6ba02e, #8cc53f); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.65;
     min-height: 100vh;
   }
 
+
+
+  /* THEME TOGGLE */
+  .theme-toggle-wrap {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 1000;
+  }
+  .theme-toggle-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .theme-toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: scale(1.05);
+  }
+  .theme-toggle-btn svg { width: 20px; height: 20px; }
+  .theme-sun { display: none; }
+  .theme-moon { display: block; }
+  .light-mode .theme-sun { display: block; }
+  .light-mode .theme-moon { display: none; }
 
   /* LANGUAGE TOGGLE */
   .lang-toggle-wrap {
@@ -124,7 +221,7 @@
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    background: linear-gradient(90deg, var(--accent), #69737b);
     border-radius: 2px;
   }
   .header .badge {
@@ -136,13 +233,13 @@
     text-transform: uppercase;
     color: var(--accent);
     background: var(--accent-glow);
-    border: 1px solid rgba(74,108,247,0.2);
+    border: 1px solid rgba(140,197,63,0.2);
     padding: 6px 16px;
     border-radius: 100px;
     margin-bottom: 20px;
   }
   .header h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: clamp(28px, 5vw, 42px);
     font-weight: 800;
     letter-spacing: -0.5px;
@@ -177,7 +274,7 @@
     padding: 10px 28px;
     border: none;
     border-radius: 100px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -192,7 +289,7 @@
     box-shadow: 0 4px 20px var(--ess-glow);
   }
   .license-btn.active-full {
-    background: linear-gradient(135deg, var(--full), #3a5ad6);
+    background: linear-gradient(135deg, #6ba02e, #4a8520);
     color: #fff;
     box-shadow: 0 4px 20px var(--full-glow);
   }
@@ -244,7 +341,7 @@
   }
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    background: linear-gradient(90deg, var(--accent), #69737b);
     border-radius: 100px;
     transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -325,7 +422,7 @@
     font-family: 'JetBrains Mono', monospace;
   }
   .tag-ess { background: var(--ess-glow); color: var(--ess); border: 1px solid rgba(245,158,66,0.2); }
-  .tag-full { background: var(--full-glow); color: var(--full); border: 1px solid rgba(74,108,247,0.2); }
+  .tag-full { background: var(--full-glow); color: var(--full); border: 1px solid rgba(140,197,63,0.2); }
   .tag-both { background: var(--accent-2-glow); color: var(--accent-2); border: 1px solid rgba(56,201,141,0.2); }
 
   .step-chevron {
@@ -408,7 +505,7 @@
   }
   .tip-box.info {
     background: var(--accent-glow);
-    border: 1px solid rgba(74,108,247,0.15);
+    border: 1px solid rgba(140,197,63,0.15);
     color: #a0b4ff;
   }
   .tip-box.warning {
@@ -437,7 +534,7 @@
   }
   .diff-full {
     background: var(--full-glow);
-    border: 1px solid rgba(74,108,247,0.15);
+    border: 1px solid rgba(140,197,63,0.15);
     color: #a0b4ff;
   }
   .diff-label {
@@ -491,7 +588,7 @@
     border-radius: 100px;
     background: var(--surface-2);
     color: var(--text-dim);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -803,6 +900,15 @@
 </style>
 </head>
 <body>
+
+
+  <!-- Theme Toggle (fixed) -->
+  <div class="theme-toggle-wrap">
+    <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
 
 <div class="container" id="app">
   <div class="header">
@@ -1607,6 +1713,23 @@
 <script>
   const STORAGE_KEY = 'syteline-pr-sop-progress';
 
+
+  let currentTheme = 'dark';
+
+  function toggleTheme() {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme();
+    saveProgress();
+  }
+
+  function applyTheme() {
+    if (currentTheme === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
+    }
+  }
+
   let currentLang = 'en';
 
   function setLang(lang) {
@@ -1637,6 +1760,7 @@
       const data = {
         filter: currentFilter,
         lang: currentLang,
+        theme: currentTheme,
         completed: Array.from(completedSteps)
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -1650,6 +1774,7 @@
       const data = JSON.parse(raw);
       if (data.filter) currentFilter = data.filter;
       if (data.lang) currentLang = data.lang;
+      if (data.theme) currentTheme = data.theme;
       if (Array.isArray(data.completed)) completedSteps = new Set(data.completed);
     } catch (e) { /* corrupted or unavailable — start fresh */ }
   }
@@ -1761,6 +1886,7 @@
   // ── Init ──
   loadProgress();
   restoreUI();
+  applyTheme();
   setLang(currentLang);
   setFilter(currentFilter);
 </script>
